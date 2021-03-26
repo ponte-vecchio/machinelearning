@@ -59,8 +59,11 @@ Table of Contents
     - [a. Identifying Common Misclassifications](#a-identifying-common-misclassifications)
       - [<b>False Negatives</b>](#bfalse-negativesb)
   - [5. Investigating Features](#5-investigating-features)
-    - [](#)
-- [Conclusion](#conclusion)
+  - [Improving the Model](#improving-the-model)
+    - [Data organisation and preprocessing](#data-organisation-and-preprocessing)
+    - [Data exploration & Feature engineering](#data-exploration--feature-engineering)
+    - [Model building](#model-building)
+    - [Model evaluation](#model-evaluation)
 
 When a machine learns from a given training set of data, then applies the knowledge learned to interpret a given dataset - this is known as Machine Learning (ML).
 
@@ -640,9 +643,49 @@ Categorical variables maintain the full list of possible classes, even when only
 cmin = removecats(cfull)
 ```
 
+Curly braces can be used to extract data from a table into a array of a single type.
 
-### 
+```matlab
+datamatrix = datatable{1:10,4:6}
+```
+This extracts the first 10 elements of variables 4, 5 and 6. If these variables are numeric, `datamatrix` will be a 10-by-3 double array.
+If we want to extract the numeric data from `UorN` and `falseneg_U` to `UorNfeat` and `falseneg_Ufeat` respectively:
 
+```matlab
+% {rows, vars}
+% we want every row and every var except the last one which is the response. All other variables are the features.
+UorNfeat = UorN{:,1:end-1};
+falseneg_Ufeat = falseneg_U{:,1:end-1}
+```
 
-# Conclusion
+A <i>parallel coordinates</i> plot shows the value of the features (or "coordinates") for each observation as a line. To compare the feature values of different Classes, use the "Group" option such that:
+
+```matlab
+parallelcoords(UorNfeat,"Group",UorN.Character)
+```
+
+## Improving the Model
+Even if your model works well, we will typically want to look for improvements before deploying it for use. Theoretically, we could try to improve the results at any part of the workflow. However, collecting data is typically the most difficult step of the process - which means we often have to work with the data we have. 
+
+### Data organisation and preprocessing
+
+If we have the option of collecting more data, we have always use the insights gained so far to inform what new data we might need to collect.
+
+### Data exploration & Feature engineering
+
+Low accuracy in both training and testing sets is an indication that our features do not provide enough information to distinguish the different classes. In particular, it is important to highlight where the classes are frequently confused to see if there are characterstics that we can capture as new features. That being said, too many features also poses a problem of its own. Redundant or irrelevant features often lead to low accuracy and increase the chance of overfitting. This is especially true for when no significant performance is observed upon adding features. On MATLAB, it is possible to use a feature selection technique to find and remove features that do not add to the overall performance of the model. We can also feature transformation to perform a change of coordinates on our features. With a technique such as principal component analysis (PCA), the transformed features are chosen to minimise redundancy and ordered by how much information they contain.
+
+### Model building
+
+MATLAB's classification learner app providers an easy way to experiment with different models. In the case of kNN models, we can vary the number of neighbours, weighting of the neighbours based on distance and the way that distance is defined and so on. 
+ 
+Some classification methods are extremely sensitive to the training data, which means we may get very different predictions from different models trained on different subsets of the data. This can be harnessed as a strength by creating an ensemble - training a large number of these so-called weak leaners on different permutations of the training data and using the distribution of individual predictions to make the final prediction.
+
+### Model evaluation
+
+When it comes to evaluating different models, it is quintessential to have an accurate measure of a model's performance. The simplest and cheapest way to do validation is <b>holdout</b> - randomly dividing your data into a training set and a testing set. This works for large data sets, but for many real life problems, holdout validation can result in the test accuracy being dependent on the specific choice of test data. 
+
+We can use k-fold cross-validation to get a more accurate estimate of performance. In this case, multiple models are trained and tested, each on a different division of the data. The reported accuract is the average from the different models.
+
+Accuracy is onle one simple metric for measuring model's performance. It is also crucial to consider the confusion matrix, false negative rates and false positive rates. Furthermore, the practice impact of a false negative may be significantly different to that of a false positive. For example, a false positive medical diagnosis may cause stress and expense, but a false negative could be fatal. In these cases, we can incorporate a cost matrix into the calculation of a model's loss.
 
