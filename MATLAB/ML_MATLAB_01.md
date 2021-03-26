@@ -1,8 +1,8 @@
-# Machine Learning with MATLAB
+# Classification Methods in Machine Learning
 
 Table of Contents
 
-- [Machine Learning with MATLAB](#machine-learning-with-matlab)
+- [Classification Methods in Machine Learning](#classification-methods-in-machine-learning)
 - [Classification Workflow](#classification-workflow)
   - [1. Import Data](#1-import-data)
     - [a. `readtable`](#a-readtable)
