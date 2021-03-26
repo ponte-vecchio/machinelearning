@@ -2,7 +2,7 @@
 
 Table of Contents
 
-- [Classification Methods in Machine Learning](#classification-methods-in-machine-learning)
+- [Introduction](#introduction)
 - [Classification Workflow](#classification-workflow)
   - [1. Import Data](#1-import-data)
     - [a. `readtable`](#a-readtable)
@@ -57,7 +57,7 @@ Table of Contents
   - [3. Making Predictions with a Classification Model](#3-making-predictions-with-a-classification-model)
   - [4. Investigating Misclassifications](#4-investigating-misclassifications)
     - [a. Identifying Common Misclassifications](#a-identifying-common-misclassifications)
-      - [<b>False Negatives</b>](#bfalse-negativesb)
+      - [False Negatives](#false-negatives)
   - [5. Investigating Features](#5-investigating-features)
   - [6. Improving the Model](#6-improving-the-model)
     - [Data organisation and preprocessing](#data-organisation-and-preprocessing)
@@ -66,7 +66,7 @@ Table of Contents
     - [Model evaluation](#model-evaluation)
 
 
-# Classification Methods in Machine Learning
+# Introduction
 
 Classification methods in machine learning (ML) aim at identifying the category of a new observation among a set of categories on the basis of a labeled training set. Depending on the task, accuracy of classification will vary.
 
@@ -568,7 +568,7 @@ When making a confusion chart, we can add information about the FALSE NEGATIVE a
 confusionchart(...,"RowSummary","row-normalized")
 ```
 
-#### <b>False Negatives</b>
+#### False Negatives
 Typically the values in confusion charts are made visible. Howeverm, in the example of predicting alphabets from handwriting there are 26 Classes to consider, making it a 26x26 table. Upon resizing, the row summary will show the false negative rates for each Class. This shows which Classes the kNN model has the most difficulty identifying.  
 
 ![](falsenegU.png)
