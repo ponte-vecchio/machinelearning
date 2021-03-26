@@ -68,40 +68,17 @@ Table of Contents
 
 # Classification Methods in Machine Learning
 
-When a machine learns from a given training set of data, then applies the knowledge learned to interpret a given dataset - this is known as Machine Learning (ML).
+Classification methods in machine learning (ML) aim at identifying the category of a new observation among a set of categories on the basis of a labeled training set. Depending on the task, accuracy of classification will vary.
 
-There are many models in which a machine can follow to *learn* a training set, including but not limited to:
 
-- ***k***-Nearest Neighbours (kNN)
-- Support Vector Machine (SVM)
-- Naive Bayes (NB)
-- Discriminant Analysis
-- Decision Tree
-  
-Oftentimes, one does not need to understand how each and every model works. Rather, one can use the training set on every model and examine which algorithm works the best. When it comes to fitting the training set to a particular model, one must consider the tug of war between:
+Note that if the output that is being predicted is a numeric value, then this is called <b>Regression</b> rather than classification. That being said, many of the ML methods for classification can be adapted to do regression instead. Regardless, building these predictive models are called *supervised learning*. It is supervised because the model is being trained on examples where the correct output is known. It typically starts with features as inputs. For some applications such as image processing or speech recognition, coming up with good features is challenging. 
 
-- a simple model that loosely describes the training/testing set with relatively decent accuracy and;
-- an overfitted model that accurately describes the training set, but not the testing set.
-
-When a training set gives good correlation for a particular model but not for the testing set, this is called *overfitting*.
-
-<center>
-<i>Table 1. Training vs testing for different models example</i>
-
-| | kNN | SVM | NaiveBayes | DA | DT |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| Training | O | X | O | X | O |
-| Testing | X | X | O | X | X |
-</center>
-
-This onramp covers the following:
+This document in particular delves into the procedures involved in classification methods in ML such as:
 - Importing data
 - Preprocessing data
 - Extracting features
 - Building a model
 - Evaluating a model
-
-
 
 # Classification Workflow
 ## 1. Import Data

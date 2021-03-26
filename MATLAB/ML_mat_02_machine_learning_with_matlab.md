@@ -1,5 +1,3 @@
-Machine Learning with MATLAB
-
 Table of Contents
 - [Finding Natural Patterns in Data](#finding-natural-patterns-in-data)
 - [Classification Methods](#classification-methods)
