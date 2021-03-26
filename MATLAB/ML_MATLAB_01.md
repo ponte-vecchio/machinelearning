@@ -1,8 +1,7 @@
-# Classification Methods in Machine Learning
+Classification Methods in Machine Learning
 
 Table of Contents
 
-- [Classification Methods in Machine Learning](#classification-methods-in-machine-learning)
 - [Classification Workflow](#classification-workflow)
   - [1. Import Data](#1-import-data)
     - [a. `readtable`](#a-readtable)
