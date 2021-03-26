@@ -1,6 +1,8 @@
-# MACHINE LEARNING IN MATLAB
+# Machine Learning with MATLAB
 
-- [MACHINE LEARNING IN MATLAB](#machine-learning-in-matlab)
+Table of Contents
+
+- [Machine Learning with MATLAB](#machine-learning-with-matlab)
 - [Classification Workflow](#classification-workflow)
   - [1. Import Data](#1-import-data)
     - [a. `readtable`](#a-readtable)
@@ -450,12 +452,7 @@ We first create a matrix $M$ defined as var `M` using four columns via concatena
 
 <center>
 
-$M = \begin{bmatrix}
-v_{X1} & v_{X2} & v_{X3} & \dots &  v_{X11}\\
-v_{Y1} & v_{Y2} & v_{Y3} & \dots &  v_{Y11}\\
-v_{X12} & v_{X13} & v_{X14} & \dots &  v_{X22}\\
-v_{Y12} & v_{Y13} & v_{Y14} & \dots &  v_{Y22}\\
-\end{bmatrix}$
+<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{150}&space;\fn_phv&space;\large&space;M&space;=&space;\begin{bmatrix}&space;v_{X1}&space;&&space;v_{X2}&space;&&space;v_{X3}&space;&&space;\dots&space;&&space;v_{X11}\\&space;v_{Y1}&space;&&space;v_{Y2}&space;&&space;v_{Y3}&space;&&space;\dots&space;&&space;v_{Y11}\\&space;v_{X12}&space;&&space;v_{X13}&space;&&space;v_{X14}&space;&&space;\dots&space;&&space;v_{X22}\\&space;v_{Y12}&space;&&space;v_{Y13}&space;&&space;v_{Y14}&space;&&space;\dots&space;&&space;v_{Y22}\\&space;\end{bmatrix}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\dpi{150}&space;\fn_phv&space;\large&space;M&space;=&space;\begin{bmatrix}&space;v_{X1}&space;&&space;v_{X2}&space;&&space;v_{X3}&space;&&space;\dots&space;&&space;v_{X11}\\&space;v_{Y1}&space;&&space;v_{Y2}&space;&&space;v_{Y3}&space;&&space;\dots&space;&&space;v_{Y11}\\&space;v_{X12}&space;&&space;v_{X13}&space;&&space;v_{X14}&space;&&space;\dots&space;&&space;v_{X22}\\&space;v_{Y12}&space;&&space;v_{Y13}&space;&&space;v_{Y14}&space;&&space;\dots&space;&&space;v_{Y22}\\&space;\end{bmatrix}" title="\large M = \begin{bmatrix} v_{X1} & v_{X2} & v_{X3} & \dots & v_{X11}\\ v_{Y1} & v_{Y2} & v_{Y3} & \dots & v_{Y11}\\ v_{X12} & v_{X13} & v_{X14} & \dots & v_{X22}\\ v_{Y12} & v_{Y13} & v_{Y14} & \dots & v_{Y22}\\ \end{bmatrix}" /></a>
 
 </center>
 
