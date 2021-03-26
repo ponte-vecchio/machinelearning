@@ -2,6 +2,9 @@ Table of Contents
 - [Finding Natural Patterns in Data](#finding-natural-patterns-in-data)
   - [1. Low Dimensional Visualisation](#1-low-dimensional-visualisation)
     - [a. Dimensionality Reduction Techniques](#a-dimensionality-reduction-techniques)
+    - [b. Multidimensional Scaling (MDS)](#b-multidimensional-scaling-mds)
+      - [i. Calculating pairwise distances](#i-calculating-pairwise-distances)
+      - [ii. Performing MDS](#ii-performing-mds)
 - [Classification Methods](#classification-methods)
 - [Improving Predictive Models](#improving-predictive-models)
 - [Regression Methods](#regression-methods)
@@ -37,6 +40,42 @@ Visualising data in 2D or 3D is simple. However, ML problems involve myriads of 
 <b>Principal Component Analysis (PCA)</b> and <b>Classical Multidimensional Scaling (cMDS)</b> are the two common ways in which we can potentially reduce the number of dimensions. Both methods are about building a new orthogonal coordinate system where the coordinates are ordered by importance. In PCA, the coordinates are in order of how much variance in the data they explain. It always transforms an <i>n</i>-dimensional space into another <i>n</i>-dimensional space. In MDS, they are ordered by how closely they preserve the pair-wise distances between observations. <i>n</i>-dimensional spaces are always transformed into the smallest space to preserve the pair-wise distances. Because of this, MDS can be used with any distance metric. For example, applying Euclidean space to MDS gives the same result as PCA. 
 
 With both methods, it is possible to get a measure of the importance of each dimension in the new orthogonal coordinate system. This is typically visualised <i>in tandem</i> with a [Pareto chart](https://en.wikipedia.org/wiki/Pareto_chart) which shows each individual value as a bar + the running total as a line. We can use Pareto charts to determine how many dimensions we consider sufficient to obtain a reasonable approximation to the full data. If two or three dimensions are deemed sufficient, then just the first two or three coordinates of the transformed data can be plotted.
+
+### b. Multidimensional Scaling (MDS)
+
+#### i. Calculating pairwise distances
+
+In MATLAB, `pdist` function can be used to calculate the pairwise distance between the observations.
+
+```matlab
+% D: distance/dissimilarty vector containing the distance between each pair of
+% observations. D is of length m(m-1)/2
+%
+% data: m x n numeric matrix containing the data. each of the m rows is
+% considered an observation
+%
+% "distance": option input, indicates the method of calculating the distance or
+% dissimilarity. options: "euclidean" (default), "cityblock" and "correlation"  
+>> D = pdist(data, "distance")
+```
+
+#### ii. Performing MDS
+
+Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`]([1]).
+
+```matlab
+% x: m x q matrix of the reconstructed coordinates in q-dimensional space
+% q is the minimum number of dimensions needed to achieve the given pdist.
+%
+% e: eigenvalues of the matrix x * x'
+% 
+% D: see above
+>> [x, e] = cmdscale(D)
+```
+
+eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
+
+[1] **c**lassical **m**ulti**d**imensional **scal**ling
 
 # Classification Methods
 
