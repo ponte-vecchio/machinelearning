@@ -45,7 +45,7 @@ With both methods, it is possible to get a measure of the importance of each dim
 
 #### i. Calculating pairwise distances
 
-In MATLAB, `pdist` function can be used to calculate the pairwise distance between the observations.
+In MATLAB, [`pdist`](https://au.mathworks.com/help/stats/pdist.html) function can be used to calculate the pairwise distance between the observations.
 
 ```matlab
 % D: distance/dissimilarty vector containing the distance between each pair of
@@ -61,7 +61,7 @@ In MATLAB, `pdist` function can be used to calculate the pairwise distance betwe
 
 #### ii. Performing MDS
 
-Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`]([1]).
+Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](https://au.mathworks.com/help/stats/cmdscale.html).
 
 ```matlab
 % x: m x q matrix of the reconstructed coordinates in q-dimensional space
@@ -74,8 +74,6 @@ Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](
 ```
 
 eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
-
-[1] **c**lassical **m**ulti**d**imensional **scal**ling
 
 # Classification Methods
 
