@@ -469,25 +469,7 @@ The output `Cmat` is a 4-by-4 matrix of the coefficiencts of correlation between
 
 <center>
 
-$\texttt{Cmat} = \small \begin{bmatrix}
-v_{X1\to11},v_{X1\to11} &
-v_{X1\to11},v_{Y1\to11} &
-v_{X1\to11},v_{X12\to22} &
-v_{X1\to11},v_{Y12\to22}\\
-v_{Y1\to11},v_{X1\to11} & 
-v_{Y1\to11},v_{Y1\to11} & 
-v_{Y1\to11},v_{X12\to22} &  
-v_{Y1\to11},v_{Y12\to22}\\
-v_{X12\to22},v_{X1\to11} & 
-v_{X12\to22},v_{Y1\to11} & 
-v_{X12\to22},v_{X12\to22} &
-v_{X12\to22},v_{Y12\to22}
-\\
-v_{Y12\to22},v_{X1\to11} & 
-v_{Y12\to22},v_{Y1\to11} & 
-v_{Y12\to22},v_{X12\to22} & 
-v_{Y12\to22},v_{Y12\to22}\\
-\end{bmatrix}$
+<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{150}&space;\fn_phv&space;\large&space;\texttt{Cmat}&space;=&space;\small&space;\begin{bmatrix}&space;v_{X1\to11},v_{X1\to11}&space;&&space;v_{X1\to11},v_{Y1\to11}&space;&&space;v_{X1\to11},v_{X12\to22}&space;&&space;v_{X1\to11},v_{Y12\to22}\\&space;v_{Y1\to11},v_{X1\to11}&space;&&space;v_{Y1\to11},v_{Y1\to11}&space;&&space;v_{Y1\to11},v_{X12\to22}&space;&&space;v_{Y1\to11},v_{Y12\to22}\\&space;v_{X12\to22},v_{X1\to11}&space;&&space;v_{X12\to22},v_{Y1\to11}&space;&&space;v_{X12\to22},v_{X12\to22}&space;&&space;v_{X12\to22},v_{Y12\to22}&space;\\&space;v_{Y12\to22},v_{X1\to11}&space;&&space;v_{Y12\to22},v_{Y1\to11}&space;&&space;v_{Y12\to22},v_{X12\to22}&space;&&space;v_{Y12\to22},v_{Y12\to22}\\&space;\end{bmatrix}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\dpi{150}&space;\fn_phv&space;\large&space;\texttt{Cmat}&space;=&space;\small&space;\begin{bmatrix}&space;v_{X1\to11},v_{X1\to11}&space;&&space;v_{X1\to11},v_{Y1\to11}&space;&&space;v_{X1\to11},v_{X12\to22}&space;&&space;v_{X1\to11},v_{Y12\to22}\\&space;v_{Y1\to11},v_{X1\to11}&space;&&space;v_{Y1\to11},v_{Y1\to11}&space;&&space;v_{Y1\to11},v_{X12\to22}&space;&&space;v_{Y1\to11},v_{Y12\to22}\\&space;v_{X12\to22},v_{X1\to11}&space;&&space;v_{X12\to22},v_{Y1\to11}&space;&&space;v_{X12\to22},v_{X12\to22}&space;&&space;v_{X12\to22},v_{Y12\to22}&space;\\&space;v_{Y12\to22},v_{X1\to11}&space;&&space;v_{Y12\to22},v_{Y1\to11}&space;&&space;v_{Y12\to22},v_{X12\to22}&space;&&space;v_{Y12\to22},v_{Y12\to22}\\&space;\end{bmatrix}" title="\large \texttt{Cmat} = \small \begin{bmatrix} v_{X1\to11},v_{X1\to11} & v_{X1\to11},v_{Y1\to11} & v_{X1\to11},v_{X12\to22} & v_{X1\to11},v_{Y12\to22}\\ v_{Y1\to11},v_{X1\to11} & v_{Y1\to11},v_{Y1\to11} & v_{Y1\to11},v_{X12\to22} & v_{Y1\to11},v_{Y12\to22}\\ v_{X12\to22},v_{X1\to11} & v_{X12\to22},v_{Y1\to11} & v_{X12\to22},v_{X12\to22} & v_{X12\to22},v_{Y12\to22} \\ v_{Y12\to22},v_{X1\to11} & v_{Y12\to22},v_{Y1\to11} & v_{Y12\to22},v_{X12\to22} & v_{Y12\to22},v_{Y12\to22}\\ \end{bmatrix}" /></a>
 
 </center>
 
