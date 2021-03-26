@@ -1,7 +1,8 @@
-Classification Methods in Machine Learning
+
 
 Table of Contents
 
+- [Classification Methods in Machine Learning](#classification-methods-in-machine-learning)
 - [Classification Workflow](#classification-workflow)
   - [1. Import Data](#1-import-data)
     - [a. `readtable`](#a-readtable)
@@ -58,11 +59,14 @@ Table of Contents
     - [a. Identifying Common Misclassifications](#a-identifying-common-misclassifications)
       - [<b>False Negatives</b>](#bfalse-negativesb)
   - [5. Investigating Features](#5-investigating-features)
-  - [Improving the Model](#improving-the-model)
+  - [6. Improving the Model](#6-improving-the-model)
     - [Data organisation and preprocessing](#data-organisation-and-preprocessing)
     - [Data exploration & Feature engineering](#data-exploration--feature-engineering)
     - [Model building](#model-building)
     - [Model evaluation](#model-evaluation)
+
+
+# Classification Methods in Machine Learning
 
 When a machine learns from a given training set of data, then applies the knowledge learned to interpret a given dataset - this is known as Machine Learning (ML).
 
@@ -663,7 +667,7 @@ A <i>parallel coordinates</i> plot shows the value of the features (or "coordina
 parallelcoords(UorNfeat,"Group",UorN.Character)
 ```
 
-## Improving the Model
+## 6. Improving the Model
 Even if your model works well, we will typically want to look for improvements before deploying it for use. Theoretically, we could try to improve the results at any part of the workflow. However, collecting data is typically the most difficult step of the process - which means we often have to work with the data we have. 
 
 ### Data organisation and preprocessing
