@@ -1,5 +1,5 @@
 Table of Contents
-- [Finding Natural Patterns in Data](#finding-natural-patterns-in-data)
+- [Finding Patterns in Data](#finding-patterns-in-data)
   - [1. Low Dimensional Visualisation](#1-low-dimensional-visualisation)
     - [a. Dimensionality Reduction Techniques](#a-dimensionality-reduction-techniques)
     - [b. Multidimensional Scaling (MDS)](#b-multidimensional-scaling-mds)
@@ -10,7 +10,7 @@ Table of Contents
 - [Regression Methods](#regression-methods)
 - [Neural Networks](#neural-networks)
 
-# Finding Natural Patterns in Data
+# Finding Patterns in Data
 
 The goal of unsupervised learning problems is to identify the natural patterns or groupings in a dataset. As an example, let's examine a table containing information about basketball players:
 
