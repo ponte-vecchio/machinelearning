@@ -5,6 +5,8 @@ Table of Contents
     - [b. Multidimensional Scaling (MDS)](#b-multidimensional-scaling-mds)
       - [i. Classical MDS](#i-classical-mds)
       - [ii. Non-classical MDS](#ii-non-classical-mds)
+    - [c. Principal Component Analysis (PCA)](#c-principal-component-analysis-pca)
+      - [i. Result interpretation](#i-result-interpretation)
 
 # Finding Patterns in Data
 
@@ -52,7 +54,7 @@ In MATLAB, [`pdist`](https://au.mathworks.com/help/stats/pdist.html) function ca
 % data: m x n numeric matrix containing the data. each of the m rows is
 % considered an observation
 %
-% "distance": option input, indicates the method of calculating the distance or
+% "distance": option input, indicates method of calculating the distance or
 % dissimilarity. options: "euclidean" (default), "cityblock" and "correlation"  
 >> D = pdist(data, "distance")
 ```
@@ -71,7 +73,7 @@ Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](
 >> [x, e] = cmdscale(D)
 ```
 
-Eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
+Eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. If the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
 
 A typical workflow would resemble something like:
 ```matlab
@@ -96,8 +98,92 @@ Pareto
 ![scatter2D](cmdsscatter.png)
 Scatter
 
-[scatter3D]()
+![scatter3D](cmdsscatter3.png)
 Scatter 3D
 
 #### ii. Non-classical MDS
 
+The `cmdscale` function determines how many dimensions are returned in the configuration matrix. In order to find a configuration matrix with a specific number of dimensions, [`mdscale`](https://au.mathworks.com/help/stats/mdscale.html) function can be used:
+
+```matlab
+confMat = mdscale(distances,numDims)
+```
+
+### c. Principal Component Analysis (PCA)
+
+As discussed earlier, another commonly used method for dimensionality reduction is PCA. In MATLAB, [`pca`](https://au.mathworks.com/help/stats/pca.html) function can be used to perform PCA:
+
+```matlab
+[pcs, scrs, ~, ~, pexp] = pca(data)
+```
+
+
+
+| Input | Description |
+| :---: | :--- |
+| `data` | *m* x *n* numeric matrix. *n* columns correspond to *n* observed variables. Each of the *m* rows corresponds to an observation |
+|
+
+| Output | Description |
+| :---: | :--- |
+| `pcs` | *n* x *n* matrix of principal components  |
+| `scrs` | *m* x *n* matrix containing the data transformed using the linear coordinate transformation matrix `pcs` (first output) |
+| `pexp` | A vector of length *n* containing the % of variance explained by each principal component |
+|
+
+
+#### i. Result interpretation
+
+<center>
+
+| | |
+| :--- | :---:|
+| Suppose that the input matrix `data` has two columns which contain values of the observed variables `x1` and `x2`. | ![](pcaData.png)|
+|
+</center>
+
+We can perform the PCA using `pca` function as follows:
+
+```matlab
+[P, scrs,~,~,pexp] = pca(data)
+```
+
+The output matrix `P` contains the principal components, represented in terms of the original variables `x1` and `x2`. The first column of `P` contains the coefficients of the first principal component `p1`, and the second column contains the coefficients of the second principal component `p2`.
+
+```matlab
+P = 
+    0.5687   0.8225
+    0.8225  -0.5687
+```
+
+<center>
+
+|||
+| :---: | :---:|
+| ![](pca1.png) | ![](pca2.png) |
+|
+
+</center>
+
+The second output `scrs` is a matrix containing the observations in `data `expressed in the coordinate space of the principal components `p1` and `p2`. For example, a singla data point and its coordinate in the transformed space can be shown as the following:
+
+<center>
+
+| | | 
+| :--- | :---: |
+| `scrs(42,:)` | ![](pca3.png) |
+|
+
+</center>
+
+Finally, the final output `pxep` is a vector containing the percent variance explained by each principal component. 
+
+<center>
+
+ | | |
+ | :--- | :--- |
+ | `pexp = 95.6706  4.3294` | `scrs(:,1)` |
+ | ![](xformd1.png) | ![](xformd2.png) |
+ |
+
+</center>
