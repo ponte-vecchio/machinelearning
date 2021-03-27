@@ -3,8 +3,8 @@ Table of Contents
   - [1. Low Dimensional Visualisation](#1-low-dimensional-visualisation)
     - [a. Dimensionality Reduction Techniques](#a-dimensionality-reduction-techniques)
     - [b. Multidimensional Scaling (MDS)](#b-multidimensional-scaling-mds)
-      - [i. Calculating pairwise distances](#i-calculating-pairwise-distances)
-      - [ii. Performing MDS](#ii-performing-mds)
+      - [i. Classical MDS](#i-classical-mds)
+      - [ii. Non-classical MDS](#ii-non-classical-mds)
 
 # Finding Patterns in Data
 
@@ -39,7 +39,9 @@ With both methods, it is possible to get a measure of the importance of each dim
 
 ### b. Multidimensional Scaling (MDS)
 
-#### i. Calculating pairwise distances
+#### i. Classical MDS
+
+<b>Calculating pairwise distances</b>
 
 In MATLAB, [`pdist`](https://au.mathworks.com/help/stats/pdist.html) function can be used to calculate the pairwise distance between the observations.
 
@@ -55,7 +57,7 @@ In MATLAB, [`pdist`](https://au.mathworks.com/help/stats/pdist.html) function ca
 >> D = pdist(data, "distance")
 ```
 
-#### ii. Performing MDS
+<b>Performing MDS</b>
 
 Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](https://au.mathworks.com/help/stats/cmdscale.html).
 
@@ -69,4 +71,33 @@ Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](
 >> [x, e] = cmdscale(D)
 ```
 
-eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
+Eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
+
+A typical workflow would resemble something like:
+```matlab
+load data
+whos X
+D = pdist(X);
+[Y, e] = cmdscale(D);
+
+% generate pareto
+pareto(e)
+
+% scatter 2D
+scatter(Y(:,1), Y(:,2))
+
+% scatter 3D
+scatter3(Y(:,1), Y(:,2), Y(:,3))
+```
+to afford the following outputs:
+![pareto](paretoe.png)
+Pareto
+
+![scatter2D](cmdsscatter.png)
+Scatter
+
+[scatter3D]()
+Scatter 3D
+
+#### ii. Non-classical MDS
+
