@@ -5,10 +5,6 @@ Table of Contents
     - [b. Multidimensional Scaling (MDS)](#b-multidimensional-scaling-mds)
       - [i. Calculating pairwise distances](#i-calculating-pairwise-distances)
       - [ii. Performing MDS](#ii-performing-mds)
-- [Classification Methods](#classification-methods)
-- [Improving Predictive Models](#improving-predictive-models)
-- [Regression Methods](#regression-methods)
-- [Neural Networks](#neural-networks)
 
 # Finding Patterns in Data
 
@@ -74,11 +70,3 @@ Dissimilairity vectors can be used an input to the MATLAB function [`cmdscale`](
 ```
 
 eigenvalues `e` can be used to determine if a low-dimensional approximation to the points in `x` provides a reasonable representation of the dat. IF the first `p` eigenvalues are significantly larger than the rest, the points are well approximated by the first `p` dimensions i.e. the first `p` columns of `x`.
-
-# Classification Methods
-
-# Improving Predictive Models
-
-# Regression Methods
-
-# Neural Networks
