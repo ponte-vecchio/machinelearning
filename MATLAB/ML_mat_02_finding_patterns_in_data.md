@@ -8,7 +8,6 @@ Table of Contents
     - [c. Principal Component Analysis (PCA)](#c-principal-component-analysis-pca)
       - [i. Result interpretation](#i-result-interpretation)
   - [2. k-Means Clustering](#2-k-means-clustering)
-    - [a. `kmeans`](#a-kmeans)
 
 # Finding Patterns in Data
 
@@ -193,8 +192,6 @@ In order to determine the *k* group centres, an iterative push-and-pull approach
 
 Because *k*-means uses random initial centre locations, the iterative procedure may converge to non-optimal centre locations. In MATLAB, it is possible to set multiple starting locations to address this issue. However, one needs to decide which of the resulting solutions is the best. A good clustering should result in observations being clustered most proximal to the group centre. Therefore, the total distance from each observation to its group centre provides a measure of the quality of the clustering. When starting with multiple starting locations, the solution with the lowest total distance is selected.
 
-### a. `kmeans` 
-
 In MATLAB, [`kmeans`](https://au.mathworks.com/help/stats/kmeans.html) function performs the *k*-means clustering.
 
 ```matlab
@@ -215,8 +212,8 @@ idx = kmeans(X, k)
 | :---: | :--- |
 | `"Distance"` | Distance metric used to access the similarity between two observations. (default = `"euclidean"`) |
 | `"Start"` | Location of the starting centoids of the two clusters.  |
-| | `g  = kmeans(x,2)` ![](cluster1.png) |
-| | `g  = kmeans(x,2,"Start",[0 -1; 6 5])` ![](cluster2.png)|
+| `g  = kmeans(x,2)`|  ![](cluster1.png) |
+| `g  = kmeans(x,2,"Start",[0 -1; 6 5])` | ![](cluster2.png)|
 | `"Replicates"` | Number of clustering repeats. Returns the lowest sum of distances between the centroids and the observations `sumd`  |
 
 Note that with varying options, clusters will also look very different.
@@ -228,7 +225,7 @@ Note that with varying options, clusters will also look very different.
 | `Distance`:`"cosine"`| ![](cluster_cosine_gscatter.png) |
 | `Distance`:`"correlation"`| ![](cluster_correlation_gscatter.png) |
 
-Typically visualisation workflow will resemble the following:
+A typicl workflow using kMC will resemble the following:
 
 ```matlab
 data = readtable("data.txt");
