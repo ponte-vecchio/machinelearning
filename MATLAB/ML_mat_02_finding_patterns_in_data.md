@@ -92,14 +92,11 @@ scatter(Y(:,1), Y(:,2))
 scatter3(Y(:,1), Y(:,2), Y(:,3))
 ```
 to afford the following outputs:
-![pareto](paretoe.png)
-Pareto
-
-![scatter2D](cmdsscatter.png)
-Scatter
-
-![scatter3D](cmdsscatter3.png)
-Scatter 3D
+| Type | Output |
+|:--- |:---: |
+|`pareto`|![pareto](paretoe.png)|
+|`scatter`|![scatter2D](cmdsscatter.png)|
+|`scatter3`|![scatter3D](cmdsscatter3.png)|
 
 #### ii. Non-classical MDS
 
@@ -153,9 +150,9 @@ P =
 
 <center>
 
-|||
-| :---: | :---:|
 | ![](pca1.png) | ![](pca2.png) |
+| :---: | :---:|
+
 
 </center>
 
@@ -163,9 +160,9 @@ The second output `scrs` is a matrix containing the observations in `data `expre
 
 <center>
 
-| | | 
-| :--- | :---: |
 | `scrs(42,:)` | ![](pca3.png) |
+| :--- | :---: |
+
 
 </center>
 
@@ -173,9 +170,8 @@ Finally, the final output `pxep` is a vector containing the percent variance exp
 
 <center>
 
- | | |
- | :--- | :--- |
  | `pexp = 95.6706  4.3294` | `scrs(:,1)` |
+ | :--- | :--- |
  | ![](xformd1.png) | ![](xformd2.png) |
 
 </center>
@@ -225,7 +221,7 @@ Note that with varying options, clusters will also look very different.
 | `Distance`:`"cosine"`| ![](cluster_cosine_gscatter.png) |
 | `Distance`:`"correlation"`| ![](cluster_correlation_gscatter.png) |
 
-A typicl workflow using kMC will resemble the following:
+A typical workflow using *k*-means clustering will resemble the following:
 
 ```matlab
 data = readtable("data.txt");
