@@ -7,6 +7,8 @@ Table of Contents
       - [ii. Non-classical MDS](#ii-non-classical-mds)
     - [c. Principal Component Analysis (PCA)](#c-principal-component-analysis-pca)
       - [i. Result interpretation](#i-result-interpretation)
+  - [2. k-Means Clustering](#2-k-means-clustering)
+    - [a. `kmeans`](#a-kmeans)
 
 # Finding Patterns in Data
 
@@ -21,7 +23,6 @@ The goal of unsupervised learning problems is to identify the natural patterns o
 | E | | | | | | |
 | ... | | | | | | |
 | Z | | | | | | |
-|  | | | | | | |
 
 On what basis can we divide the players? In basketball, players are divided into three groups of positions - Guards; Forwards and Centres. Teams generally rely on these three positions when choosing their players with the assumption that players who play the same position will have similar sets of skills and statistics. *But we don't know that ... yet.*
 
@@ -35,7 +36,7 @@ A quick and easy way tosee if the players can be grouped (based on their stats) 
 ### a. Dimensionality Reduction Techniques
 Visualising data in 2D or 3D is simple. However, ML problems involve myriads of dimensions which make visualisation a tricky task. Typically there is an internal structure to that data i.e. most of the information is in fact contained in fewer dimensions than the entirety of the data set. That is, it is possible to transform variables into a lower dimensional space without losing the integrity of information. For relatively small problems, it may be possible to visualise the transformed data in 2D or 3D to get an approximate representation of the data. 
 
-<b>Principal Component Analysis (PCA)</b> and <b>Classical Multidimensional Scaling (cMDS)</b> are the two common ways in which we can potentially reduce the number of dimensions. Both methods are about building a new orthogonal coordinate system where the coordinates are ordered by importance. In PCA, the coordinates are in order of how much variance in the data they explain. It always transforms an <i>n</i>-dimensional space into another <i>n</i>-dimensional space. In MDS, they are ordered by how closely they preserve the pair-wise distances between observations. <i>n</i>-dimensional spaces are always transformed into the smallest space to preserve the pair-wise distances. Because of this, MDS can be used with any distance metric. For example, applying Euclidean space to MDS gives the same result as PCA. 
+<b>Principal Component Analysis (PCA)</b> and <b>Classical Multidimensional Scaling (MDS)</b> are the two common ways in which we can potentially reduce the number of dimensions. Both methods are about building a new orthogonal coordinate system where the coordinates are ordered by importance. In PCA, the coordinates are in order of how much variance in the data they explain. It always transforms an <i>n</i>-dimensional space into another <i>n</i>-dimensional space. In MDS, they are ordered by how closely they preserve the pair-wise distances between observations. <i>n</i>-dimensional spaces are always transformed into the smallest space to preserve the pair-wise distances. Because of this, MDS can be used with any distance metric. For example, applying Euclidean space to MDS gives the same result as PCA. 
 
 With both methods, it is possible to get a measure of the importance of each dimension in the new orthogonal coordinate system. This is typically visualised <i>in tandem</i> with a [Pareto chart](https://en.wikipedia.org/wiki/Pareto_chart) which shows each individual value as a bar + the running total as a line. We can use Pareto charts to determine how many dimensions we consider sufficient to obtain a reasonable approximation to the full data. If two or three dimensions are deemed sufficient, then just the first two or three coordinates of the transformed data can be plotted.
 
@@ -117,20 +118,15 @@ As discussed earlier, another commonly used method for dimensionality reduction 
 [pcs, scrs, ~, ~, pexp] = pca(data)
 ```
 
-
-
 | Input | Description |
 | :---: | :--- |
 | `data` | *m* x *n* numeric matrix. *n* columns correspond to *n* observed variables. Each of the *m* rows corresponds to an observation |
-|
 
 | Output | Description |
 | :---: | :--- |
 | `pcs` | *n* x *n* matrix of principal components  |
 | `scrs` | *m* x *n* matrix containing the data transformed using the linear coordinate transformation matrix `pcs` (first output) |
 | `pexp` | A vector of length *n* containing the % of variance explained by each principal component |
-|
-
 
 #### i. Result interpretation
 
@@ -139,7 +135,7 @@ As discussed earlier, another commonly used method for dimensionality reduction 
 | | |
 | :--- | :---:|
 | Suppose that the input matrix `data` has two columns which contain values of the observed variables `x1` and `x2`. | ![](pcaData.png)|
-|
+
 </center>
 
 We can perform the PCA using `pca` function as follows:
@@ -161,7 +157,6 @@ P =
 |||
 | :---: | :---:|
 | ![](pca1.png) | ![](pca2.png) |
-|
 
 </center>
 
@@ -172,7 +167,6 @@ The second output `scrs` is a matrix containing the observations in `data `expre
 | | | 
 | :--- | :---: |
 | `scrs(42,:)` | ![](pca3.png) |
-|
 
 </center>
 
@@ -184,6 +178,73 @@ Finally, the final output `pxep` is a vector containing the percent variance exp
  | :--- | :--- |
  | `pexp = 95.6706  4.3294` | `scrs(:,1)` |
  | ![](xformd1.png) | ![](xformd2.png) |
- |
 
 </center>
+
+## 2. k-Means Clustering
+
+We might have some prior knowledge about the number of groups to which the subjects/sample should be divided. We have covered low-dimensional visualisation in the previous chapter, which helps us identify the number of potential groups. 
+
+Once the number of groups are decided, *k*-means clustering method can be used to divide the observations into groups/clusters. *k*-means is a way of dividing observations into *n* number of groups by determining the location of *k* group centres, then assigning each observation to a group according to which group centre it is closest to.
+
+<b>How are the *k* group centres determined?</b>
+
+In order to determine the *k* group centres, an iterative push-and-pull approach is used. Starting with random centre locations, the observations are assigned to the group of the closest centre. Using those groups, the centre positions are updated by averaging the observations in the group. That is, the centres are used to maked the groups then the groups are used to recalculate the centres. Such process repeats until the centres eventually converge to fixed locations. 
+
+Because *k*-means uses random initial centre locations, the iterative procedure may converge to non-optimal centre locations. In MATLAB, it is possible to set multiple starting locations to address this issue. However, one needs to decide which of the resulting solutions is the best. A good clustering should result in observations being clustered most proximal to the group centre. Therefore, the total distance from each observation to its group centre provides a measure of the quality of the clustering. When starting with multiple starting locations, the solution with the lowest total distance is selected.
+
+### a. `kmeans` 
+
+In MATLAB, [`kmeans`](https://au.mathworks.com/help/stats/kmeans.html) function performs the *k*-means clustering.
+
+```matlab
+idx = kmeans(X, k)
+```
+
+| Input | Description |
+| :---: | :--- |
+| `X` | Data, specified as a numeric matrix |
+| `k` | Number of clusters |
+
+
+| Output | Description |
+| :---: | :--- |
+| `idx` | Cluster indices. Returned as a numeric column vector  |
+
+| Options | Description |
+| :---: | :--- |
+| `"Distance"` | Distance metric used to access the similarity between two observations. (default = `"euclidean"`) |
+| `"Start"` | Location of the starting centoids of the two clusters.  |
+| | `g  = kmeans(x,2)` ![](cluster1.png) |
+| | `g  = kmeans(x,2,"Start",[0 -1; 6 5])` ![](cluster2.png)|
+| `"Replicates"` | Number of clustering repeats. Returns the lowest sum of distances between the centroids and the observations `sumd`  |
+
+Note that with varying options, clusters will also look very different.
+
+| Options | Output |
+| :--- | :---: |
+| `Distance`:`"default"`  | ![](cluster_default_gscatter.png) |
+| `Distance`:`"cityblock"` | ![](cluster_cityblock_gscatter.png) |
+| `Distance`:`"cosine"`| ![](cluster_cosine_gscatter.png) |
+| `Distance`:`"correlation"`| ![](cluster_correlation_gscatter.png) |
+
+Typically visualisation workflow will resemble the following:
+
+```matlab
+data = readtable("data.txt");
+
+% turn a column into categorical
+data.colName = categorical(data.colName);
+
+% extract and normalise columns of interest
+stats = data{:,[5, 6, 11:end]};
+stats_Norm = normalize(stats);
+
+% perform kMC into n groups with j replicates
+kgrp = kmeans(stats_Norm, n, "Replicates", j)
+
+% perform PCA then plot them transformed data in 3D space
+
+[pcs, scrs] = pca(stats_Norm);
+scatter3(scrs(:,1), scrs(:,2), scrs(:,3, 10, kgrp))
+```
