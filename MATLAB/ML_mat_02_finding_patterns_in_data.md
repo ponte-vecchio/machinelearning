@@ -8,6 +8,9 @@ Table of Contents
     - [c. Principal Component Analysis (PCA)](#c-principal-component-analysis-pca)
       - [i. Result interpretation](#i-result-interpretation)
   - [2. k-Means Clustering](#2-k-means-clustering)
+  - [3. Gaussian Mixture Models](#3-gaussian-mixture-models)
+    - [a. Fitting Gaussian distributions](#a-fitting-gaussian-distributions)
+    - [b. Identifying clusters](#b-identifying-clusters)
 
 # Finding Patterns in Data
 
@@ -240,4 +243,71 @@ kgrp = kmeans(stats_Norm, n, "Replicates", j)
 
 [pcs, scrs] = pca(stats_Norm);
 scatter3(scrs(:,1), scrs(:,2), scrs(:,3, 10, kgrp))
+```
+
+## 3. Gaussian Mixture Models
+
+Another clustering method we can use is a Gaussian Mixture Model (GMM). A GMM is a distribution fit made up of *k* multidimensional -- Gaussian -- or normal distributions. Observations are then grouped according to which of the *k* Gaussians they most likely originate from. One advantage of this probabilistic approach is that the probabilities can provide some insight into the quality of the clustering. Well-clustered data will belong to just one of the *k* Gaussians. 
+
+Fitting the Gaussian mixture model is an iterative process where it starts with initial estimates of the distribution paramaters then refining them. Some randomisation is used by default to obtain the initial estimates i.e. fitting the same data could result in different groupings. Some initial estimates can even lead to iterations that do not converge. Much like that of k-means clustering, MATLAB does offer options to repeat the fitting several times to output the best fit as the final model. Numerical calculation of the covariance matrices can also be controlled. 
+
+### a. Fitting Gaussian distributions
+
+In MATLAB, [`fitgmdist`](https://au.mathworks.com/help/stats/fitgmdist.html) function can be used to fit several multidimensional Gaussian distributions.
+
+```matlab
+% GMModel returns a Gaussian mixture distribution model with k components
+% fitted to data (X)
+GMModel = fitgmdist(X, k)
+```
+
+<table>
+<tr>
+<td> Input </td> <td> Output </td>
+</tr>
+<tr>
+<td> 
+
+```matlab
+mu1 = [1 2];
+Sigma1 = [2 0; 0 0.5];
+mu2 = [-3 -5];
+Sigma2 = [1 0;0 1];
+rng(1);
+% For reproducibility
+X = [mvnrnd(mu1,Sigma1,1000); mvnrnd(mu2,Sigma2,1000)];
+
+% fit GMM, specify 2 components
+GMModel = fitgmdist(X,2);
+
+% plot data over GMM contours
+figure
+y = [zeros(1000,1);ones(1000,1)];
+h = gscatter(X(:,1),X(:,2),y);
+hold on
+gmPDF = @(x,y) arrayfun(@(x0,y0) pdf(GMModel,[x0 y0]),x,y);
+g = gca;
+fcontour(gmPDF,[g.XLim g.YLim])
+title('{Scatter Plot and Fitted Gaussian Mixture Contours}')
+legend(h,'Model 0','Model1')
+hold off
+```
+</td>
+<td> <img src="GMMex1.png" width="560" height="420" /> </td>
+
+</table>
+
+### b. Identifying clusters
+
+Once the GMM is set, it can be probabilistically clustered by calculating each observation's posterior probability for each component. We can also return the individual probabilities used to determine the clusters. In the example below, the matrix `p` will have the same number of rows as the number of observations in `X` and `k` number of columns - one for each of the clusters specified in the `fitgmdist` function.
+
+```matlab
+% fit 
+gm = fitgmdist(X,k);
+
+% generate cluster
+g = cluster(gm,X);
+
+% return individual probabilities
+[g, ~, p] = cluster(gm,X)
 ```
