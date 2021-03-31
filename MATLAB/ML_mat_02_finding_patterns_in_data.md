@@ -9,8 +9,12 @@ Table of Contents
       - [i. Result interpretation](#i-result-interpretation)
   - [2. k-Means Clustering](#2-k-means-clustering)
   - [3. Gaussian Mixture Models](#3-gaussian-mixture-models)
-    - [a. Fitting Gaussian distributions](#a-fitting-gaussian-distributions)
-    - [b. Identifying clusters](#b-identifying-clusters)
+    - [a. Fitting Gaussian Distributions](#a-fitting-gaussian-distributions)
+    - [b. Identifying Clusters](#b-identifying-clusters)
+  - [4. Interpreting the Clusters](#4-interpreting-the-clusters)
+    - [a. Visualisation of Observations in Clusters](#a-visualisation-of-observations-in-clusters)
+    - [b. Cross-tabulation](#b-cross-tabulation)
+    - [c. Cluster Quality Evaluation](#c-cluster-quality-evaluation)
 
 # Finding Patterns in Data
 
@@ -251,7 +255,7 @@ Another clustering method we can use is a Gaussian Mixture Model (GMM). A GMM is
 
 Fitting the Gaussian mixture model is an iterative process where it starts with initial estimates of the distribution paramaters then refining them. Some randomisation is used by default to obtain the initial estimates i.e. fitting the same data could result in different groupings. Some initial estimates can even lead to iterations that do not converge. Much like that of k-means clustering, MATLAB does offer options to repeat the fitting several times to output the best fit as the final model. Numerical calculation of the covariance matrices can also be controlled. 
 
-### a. Fitting Gaussian distributions
+### a. Fitting Gaussian Distributions
 
 In MATLAB, [`fitgmdist`](https://au.mathworks.com/help/stats/fitgmdist.html) function can be used to fit several multidimensional Gaussian distributions.
 
@@ -297,7 +301,7 @@ hold off
 
 </table>
 
-### b. Identifying clusters
+### b. Identifying Clusters
 
 Once the GMM is set, it can be probabilistically clustered by calculating each observation's posterior probability for each component. We can also return the individual probabilities used to determine the clusters. In the example below, the matrix `p` will have the same number of rows as the number of observations in `X` and `k` number of columns - one for each of the clusters specified in the `fitgmdist` function.
 
@@ -311,3 +315,123 @@ g = cluster(gm,X);
 % return individual probabilities
 [g, ~, p] = cluster(gm,X)
 ```
+
+## 4. Interpreting the Clusters
+
+Suppose that the basketball players have now been divided into two clusters. For the cluster analysis to be useful, statistics that contribute towards cluster formation need to be identified. In this section, we will look at different ways to interpret clusters and evaluate cluster quality.
+
+### a. Visualisation of Observations in Clusters
+
+It can be difficult to visualise the groups as points in space, especially with high-dimensional data. What can we do to interpret the groups given by a clustering method? In MATLAB, we can use the [`parallelcoords`](https://au.mathworks.com/help/stats/parallelcoords.html) function to visualise each observation by cluster rather than one by one.  
+
+```matlab
+parallelcoords(X, "Group", g)
+
+% R2021a onwards
+parallelcoords(X, group = g)
+```
+|Variable|Description|
+| :--- | :--- |
+`X` | Data, specified as numeric matrix
+`g` | Vector containing the observations' group or cluster identifiers
+
+
+Consider a dataset in which each observation has four variables (measurements, coordinates) where we have created two clusters. 
+
+```matlab
+%% generate a random dataset
+% group: 16 x 1 cell
+group = {'cluster1'; 'cluster1'; 'cluster1'; 'cluster1'; 'cluster1'; ...
+'cluster1'; 'cluster1'; 'cluster1'; 'cluster2'; 'cluster2'; 'cluster2'; ...
+'cluster2'; 'cluster2'; 'cluster2'; 'cluster2'; 'cluster2'};
+
+% measurement = 16 x 4 double
+measurement = rand(16,4);
+measurement(1:8,:) = measurement(1:8,:) .* [5 2 4 0.25]
+```
+
+We can visualise the first observation by plotting its variable on the y-axis and the variable number on the x-axis. Likewise, the second observation can also be visualised. If the second observation is in a different cluster, `parallelcoords` will use a different colour to distinguish the clusters.
+
+<b>Examples</b>
+
+```matlab
+% plot the first row
+parallelcoords(measurement(1,:), group=group(1,:), linewidth=1)
+```
+
+| ![](pcoords_cluster1.png)|
+| :---: |
+
+```matlab
+% plot the first two rows
+parallelcoords(measurement(1:2,:), group=group(1:2,:), linewidth=1)
+```
+
+| ![](pcoords_cluster1_2.png)|
+| :---: |
+
+
+```matlab
+% plot every observation
+parallelcoords(measurement, group=group, linewidth=1)
+```
+
+| ![](pcoords_cluster12.png)|
+| :---: |
+
+In addition to `Group` property, `Quantile` property with a value between 0 and 1 can be used. If the value <i>α</i> is specified, then only the media, <i>α</i> and 1-<i>α</i> quantile values are plotted for each group.
+
+```matlab
+% plot every observation by cluster with quantiles
+parallelcoords(measurement(1:2,:), group=group(1:2,:), linewidth=1, quantile=0.25))
+```
+
+| ![](pcoords_cluster_quantile.png) |
+| :---: |
+
+We can also visualise the centroids from each group which are evaluated from `kmeans` function:
+
+```matlab
+[~, centroid] = kmeans(measurement, 2);
+parallelcoords(centroid, group = ["cluster 1", "cluster 2"], lindwidth=1)
+```
+
+| ![](pcoords_centroid.png) |
+| :---: |
+
+### b. Cross-tabulation
+
+In some datasets, the observations already have a category associated with them. In order to study the distribution of clusters across the original categories, we can use the [`crosstab`](https://au.mathworks.com/help/stats/crosstab.html) function.
+
+```matlab
+counts = crosstab(yCat, cluster)
+```
+
+| `counts` | cluster(1) | cluster(2) | cluster(3) | ... | cluster(n) |
+ :---: | :---: | :---: | :---: | :---: | :---: |
+yCat(1) |
+yCat(2) |
+: |
+yCat(m) |
+
+the `counts` matrix can be visualised using the [`bar`](https://au.mathworks.com/help/matlab/ref/bar.html) function wiht the "stacked" option.
+
+```matlab
+bar(counts, "stacked")
+xticklabels(categories(yCat))
+legend("1","2", ... ,len(cluster))
+```
+
+Doing the above visualises the distribution of assigned clusters for each original category. What if we wanted to see the distribution of categories in each cluster instead? This can be done by plotting the tranpose of the cross-tabulated matrix `counts`.
+
+```matlab
+bar(counts',"stacked") % note the ' for transposition
+xticklabels(["1","2", ... ,len(cluster)])
+legend(categories(yCat))
+```
+
+### c. Cluster Quality Evaluation
+
+When using clustering techniques such as *k*-means and GMM, the number of clusters must be specified. In the case of a higher-dimensional data, this can be a difficult task. 
+
+In order to judge the quality of the clusters, we can use the `silhouette` function in MATLAB. An observation's silouette value is a normalised measure (-1 <= *s(i)* <= +1) of how close that observation is to other observations within the same cluster cf. the observations in different clusters.
