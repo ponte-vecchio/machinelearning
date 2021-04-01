@@ -434,4 +434,86 @@ legend(categories(yCat))
 
 When using clustering techniques such as *k*-means and GMM, the number of clusters must be specified. In the case of a higher-dimensional data, this can be a difficult task. 
 
-In order to judge the quality of the clusters, we can use the `silhouette` function in MATLAB. An observation's silouette value is a normalised measure (-1 <= *s(i)* <= +1) of how close that observation is to other observations within the same cluster cf. the observations in different clusters.
+In order to judge the quality of the clusters, we can use the [`silhouette`](https://au.mathworks.com/help/stats/silhouette.html) function in MATLAB. (For further reading on the concept of silhouette in clustering, see [here](https://en.wikipedia.org/wiki/Silhouette_(clustering)))An observation's silouette value is a normalised measure (-1 <= *s(i)* <= +1) of how close that observation is to other observations within the same cluster cf. the observations in different clusters. 
+
+Below is an example of two silhouette plots for the same dataset with differing number of clusters.
+
+```matlab
+[group, C] = kmeans(X, k)
+silhouette(X, group)
+```
+
+| *k* = 2 | *k* = 3 |
+| :---: | :---: |
+| ![](silhouette2.png) | ![](silhouette3.png) |
+
+In this case, having two clusters affords better quality clusters than dividing the data into three clusters. The silhouette plot where *k*=2 shows fewer negative silhouette values and the negative values themselves are of smaller in magnitue that that of the silhouette values where *k*=3. 
+
+Instead of manually experimenting with different numbers of clusters, this process can be automated using `evalclusters` function in MATLAB. For example, the following function call creates 2 to 5 clusters using *k*-means clustering and calculates the silhouette values for each clustering scheme. For more information, see [documentation](https://au.mathworks.com/help/stats/evalclusters.html#inputarg_criterion).
+
+```matlab
+% create 2~5 clusters
+% clustering method: k-means
+% evaluation: silhouette
+clust_eval = evalcluster(X, "kmeans", "silhouette", "KList", 2:5)
+
+% optimal number of clusters
+k_best = clust_eval.OptimalK
+```
+
+<b>Example</b>
+
+An example workflow is shown below, using the basketball data.
+
+```matlab
+% load, format and normalise data
+data = readtable("bball.txt");
+data.pos = categorical(data.pos);
+stats = data{:,[5 6 11:end]};
+labels = data.Properties.VariableNames([5 6 11:end]);
+statsNorm = normalize(stats);
+
+% group data using GMM
+gmModel = fitgmdist(statsNorm,2,"Replicates",5,"RegularizationValue",0.02);
+grp = cluster(gmModel,statsNorm);
+```
+
+```matlab
+% generate stacked bar plot
+ct = crosstab(data.pos,grp);
+bar(ct,"stacked")
+legend("1", "2")
+xticklabels(categories(data.pos))
+```
+
+![bar(ct,"stacked")](barstack_basketball.png)
+
+```matlab
+% compare meanss of distributions
+centroids = gmModel.mu
+parallelcoords(centroids, group=1:2)
+xticklabels(labels)
+xtickangle(60)
+```
+
+![parallelcoords(centroids, group=1:2)](pcoords_basketball.png)
+
+```matlab
+% evaluate GMM clustering of var statsNorm for 2:4
+cev = evalclusters(statsNorm,"gmdistribution","DaviesBouldin","KList",2:4)
+optK = cev.OptimalK
+```
+
+```matlab
+>> cev =
+  DaviesBouldinEvaluation with properties:
+
+    NumObservations:  1117
+    InspectedK:       [2 3 4]
+    CriterionValues:  [1.1680 1.4500 1.5250]
+    OptimalK:         2
+
+>> optK = 2
+```
+
+
