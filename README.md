@@ -1,3 +1,8 @@
+![GitHub](https://img.shields.io/github/license/ponte-vecchio/machinelearning?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/ponte-vecchio/machinelearning?style=flat-square)
+![GitHub top language](https://img.shields.io/github/languages/top/ponte-vecchio/machinelearninga?style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/ponte-vecchio/machinelearning?style=flat-square)
+
 Table of contents
 
 - [MATLAB](#matlab)
