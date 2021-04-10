@@ -15,6 +15,10 @@ Table of Contents
     - [a. Visualisation of Observations in Clusters](#a-visualisation-of-observations-in-clusters)
     - [b. Cross-tabulation](#b-cross-tabulation)
     - [c. Cluster Quality Evaluation](#c-cluster-quality-evaluation)
+  - [5. Hierarchical Cluster Analysis (HCA)](#5-hierarchical-cluster-analysis-hca)
+    - [a. Determining the Hierarchical Cluster](#a-determining-the-hierarchical-cluster)
+    - [b. Dividing Hierarchical Tree into Clusters](#b-dividing-hierarchical-tree-into-clusters)
+    - [c. Example](#c-example)
 
 # Finding Patterns in Data
 
@@ -516,4 +520,131 @@ optK = cev.OptimalK
 >> optK = 2
 ```
 
+## 5. Hierarchical Cluster Analysis (HCA)
+
+Hierarchical Cluster Analysis (HCA) is a method of cluster analysis which involves the exploration of sub-clusters that are grouped together to form bigger clusters. We have seen that the basketball dataset could be divided into two clusters. One of the clusters contained predominantly guards where the players were relatively shorter, lighter and fewer rebounds but more assists and 3-point shots. Even though these players may exhibit similar statistics, it is possible to group them further. For example, a group of point guards may have different statistics from a group of shooting guards. This is where hierarchical clustering comes in. 
+
+One way to cluster data without specifying the *k* value is to build a "bottom-up" map of the full structure of the data, known as <b>agglomerative HCA</b>.  This can be done by recursively linking pairs of groups into larger groups in order of the distance between them. Initially, this would mean that each observation will be its own group. Each linkage combines observations into larger groups until all the data has been merged into a single group as one moves up the hierarchy. The opposite of this is called the <b>divisive HCA</b> where all observations start in one cluster, and then splits are performed recursively as one moves down the hierarchy.
+
+In order to decide which clusters should be combined (w.r.t. agglomerative) or split (w.r.t divisive), a measure of dissimilarity betwen sets of observations is necessary. In typical HCA methods, this is achieved by 
+
+HCA requires calculating the distance between groups of <u>any</u> number of observations. In order to achieve this, we need to 1) define distance and; 2) specify a [metric](https://en.wikipedia.org/wiki/Metric_(mathematics)) for measuring distance. MATLAB uses the smallest distance between any two points in the two groups then uses Euclidean distance metric.
+
+Commonly used metrics for HCA include:
+
+<center>
+
+| Name | Formula |
+| :--- | :--- |
+| Euclidean | ![](https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cleft%7C%5Cleft%7C%20a-b%20%5Cright%7C%5Cright%7C_2%20%3D%20%5Csqrt%7B%5Csum_%7Bi%7D%20%5Cleft%28%20a_i%20-%20b_i%20%5Cright%29%5E2%7D)  |
+| Squared Euclidean | ![](https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cleft%7C%5Cleft%7C%20a-b%20%5Cright%7C%5Cright%7C_2%5E2%20%3D%20%5Csum_%7Bi%7D%20%5Cleft%28%20a_i%20-%20b_i%20%5Cright%29%5E2) |
+| Manhattan | ![](https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cleft%7C%5Cleft%7C%20a-b%20%5Cright%7C%5Cright%7C_1%20%3D%20%5Csum_%7Bi%7D%20%5Cleft%7C%20a_i%20-%20b_i%20%5Cright%7C) |
+| Maximum | ![](https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Cleft%7C%5Cleft%7C%20a-b%20%5Cright%7C%5Cright%7C_%7B%5Cinfty%7D%20%3D%20%5Cmax_%7Bi%7D%20%5Cleft%7C%20a_i%20-%20b_i%20%5Cright%7C) |
+| Mahalanobis | ![](https://latex.codecogs.com/svg.latex?%5Cdisplaystyle%20%5Csqrt%7B%5Cleft%28%20a%20-%20b%20%5Cright%29%5E%7B%5Ctop%7D%20S%5E%7B-1%7D%5Cleft%28%20a%20-%20b%20%5Cright%29%7D) <sup>*</sup> |
+
+<sup>*</sup> *S* is the covariance matrix
+
+</center>
+
+This results of HCA are easily understood using a [dendrogram](https://en.wikipedia.org/wiki/Dendrogram). In a dendrogram, each connection represents a link between a pair of groups and the height of the horizontal bar represents the distance between thetwo groups it connects. As you move up, it shows the full structure of the nested groups. Keep in mind that, with a large number of observations, the full dendrogram can be difficult to visualise. In MATLAB, only as far as 30 groups at the bottom level are shown by default. Having created the dendrogram, we can visualise potential groupings by looking for (relatively) large distance between all the groups - using that particular level of the nested structure as a cut-off.
+
+### a. Determining the Hierarchical Cluster
+
+In MATLAB, [`linkage`](https://au.mathworks.com/help/stats/linkage.html) function can be used to encode a tree of hierarchical clusters from a set of observations. The returned binary cluster tree can then be visualised using the [`dendrogram`](https://au.mathworks.com/help/stats/dendrogram.html) function. The way that `linkage` computes the distance between clusters can be modified by passing an optional input. For example, `"ward"` value computes the inner squared distance using Ward's minimum variance algorithm. It is also possible to attune the dendrogram. For example, passing the `P` argument limits the plot to generate no more than <i>P</i> number of nodes. Additional Name-Value pair arguments can be passed to modify the orientation and the colouring of branches.
+
+```matlab
+load data
+whos X
+
+% Encode a binary cluster tree
+Z = linkage(X, "method")
+
+%% Generate dendrogram
+dendrogram(Z)
+
+% dendrogram with a maximum of 15 nodes
+dendrogram(Z, 15)
+
+% reorientate with labels
+lbl = ['a', 'b', ... 'n' ];
+dendrogram(Z, 'Orientation', 'right', 'Labels', lbl)
+```
+
+<b>List of available algorithms for computing the distance between clusters</b>
+
+| <b>Method</b> | <b>Description</b> |
+| :---: | :--- |
+| `average` | Unweighted average distance (UPGMA) |
+| `centroid` | Centroid distance (UPGMC), appropriate for Euclidean distances only |
+| `complete` | Furthest distance |
+| `median` | Weighted centre of mass distance (WPGMC), appropriate for Euclidean distances only | 
+| `single` | Shortest distance |
+| `ward` | Inner squared distance (minimum variance algorithm), appropriate for Euclidean distances only |
+| `weighted` | Weighted average distance (WPGMA) |
+
+### b. Dividing Hierarchical Tree into Clusters
+
+Once the linkage distances `Z` is calculated, `cluster` function can be used to assign observations to one of the <i>k</i> groups according to `Z`. Another method is to use `pdist` to compute the pairwise distances of the original data, then to use the `cophenet` function to calculate the Cophenetic correlation coefficient. The Cophenetic correlation coefficient quantifies how accurately the tree represents the distances between observations. Values close to 1 indicate a high-quality solution.
+
+```matlab
+%% Generate k number of clusters (k : numerical)
+grp = cluster(Z, k)
+
+% generate 6 clusters from the linkage distances D and assign to G
+G = cluster(D, 6)
+
+%% Cophenet Corr Coeff
+load data
+whos Surveys
+
+zSur = linkage(Surveys);
+pDistSur = pdist(Surveys);
+cccSur = cophenet(zSur, pDistSur)
+
+% example output
+>> cccSur = 0.9389
+```
+
+### c. Example
+
+Consider the baseball example mentioned earlier. We can use the `linkage` function then examine if having two or three clusters is a good fit. For example:
+
+```matlab
+%% Load, format and normalise the data
+data = readtable("baseball.txt");
+data.pos = categorical(data.pos);
+stats = data{:,[5 6 11:end]};
+labels = data.Properties.VariableNames([5 6 11:end]);
+statsNorm = normalize(stats);
+
+%% Extract data for the guard position (G)
+posStats = statsNorm(data.pos == "G",:);
+
+%% Use HCA using Ward Algorithm, then cluster it into 2 vs 3 groups
+Z = linkage(posStats, "ward");
+gc2 = cluster(Z, 2);
+gc3 = cluster(Z, 3);
+
+%% Visualise the clusters
+parallelcoords(posStats,"Group",gc2,"Quantile",0.25,"Labels",labels)
+xtickangle(60)
+parallelcoords(posStats,"Group",gc3,"Quantile",0.25,"Labels",labels)
+xtickangle(60)
+
+%% Evaluate the hierarchical clustering 
+% Visualise the hierarchy in a dendrogram
+dendrogram(Z)
+
+% Evaluate the clustering of posStats for groups sizes 2~8.
+ec = evalclusters(posStats, "linkage", "silhouette", "KList", [2:8])
+
+% Example Output
+ec = 
+  SilhouetteEvaluation with properties:
+
+  NumObservations:  367
+       InspectedK:  [2 3 4 5 6 7 8]
+  CriterionValues:  [0.5960 0.2795 0.2641 0.2348 0.2423 0.2516 0.2523]  
+         OptimalK:  2
+```
 
