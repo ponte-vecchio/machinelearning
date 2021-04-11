@@ -8,6 +8,8 @@ Table of Contents
     - [i. Example 1](#i-example-1)
     - [ii. Example 2 - Numerical & Categorical Data](#ii-example-2---numerical--categorical-data)
   - [4. Discriminant Analysis](#4-discriminant-analysis)
+    - [i. Example 1](#i-example-1-1)
+    - [ii. Example 2 - COPD Data (Numerical only)](#ii-example-2---copd-data-numerical-only)
 
 # Classification Methods
 
@@ -46,7 +48,7 @@ Commonly Used Args
 
 | Fit Time  | Prediction Time | Memory Consumption |
 |:---: | :---: | :---: |
-| Fast| Fast, proportional to dataSize^2 | Small|
+| Fast| Fast, &propto; dataSize<sup>2</sup> | Small|
 
 
 
@@ -95,7 +97,7 @@ Commonly Used Args
 
 | Fit Time | Prediction Time | Memory Consumption |
 |:---: | :---: | :---: |
-| Proportional to the dataSize | Fast | Small |
+| &propto; dataSize | Fast | Small |
 
 ### i. Example
 
@@ -185,7 +187,6 @@ Commonly Used Args
 | `mn` | Multinomial distribution. IF `mn` is specified, then all features are components of a multinomial distribution i.e. `mn` cannot be included as an element of a string array or a cell array of character vectors. |
 | `mvmn` | Multivariate multinomial distribution. See [link](https://au.mathworks.com/help/stats/fitcnb.html#budugq6-13) |
 | `normal` | Gaussian distribution |
-
 
 - `Width`: Width of the smoothing window (when `DistributionNames` is set to `kernel`)
 
@@ -294,3 +295,153 @@ Test Error: 0.24039
 
 ## 4. Discriminant Analysis
 
+Similar to NB, discriminant analysis (DA) works by assuming that the observations in each prediction class can be modelled with a normal probability distribution. However, no assumption of independence in each predictor is made. That is, a multivariate normal distribution is fitted to each class.
+
+DA is quite similar to logistic regression (LR) and both can be used to answer the same research question. The key difference is that LR does not have as many assumptions and restrictions as DA. That being said, when DA's assumptions are met, it can be more powerful than LR. Unlike LR, DA can be used with small sample sizes. When sample sizes are equal and the homogeneity of variance/covariance holds, DA has been shown to be more accurate. Despite this, LR is the more popular choice because the assumptions of DA are rarely met. 
+
+<b>Assumptions in DA</b>
+
+The assumptions of DA are much like that of multivariate analysis of variance (mANOVA). It is quite sensitive to outliers and the size of the smallest group must be larger than the number of predictor variables.
+
+  1. Multivariate normality: independent variables are normal for each level of the grouping variable.
+  2. Homoscedasticity: homogeneity of covariance
+  3. Multicollinearity: predictive power can decrease with an increased correlation between predictor variables.
+  4. Independence: participants are assumed to be randomly sampled, and a participant's score on one variable is assumed to be independent of scores on that variable for all other participants.
+
+<b>Concept</b>
+
+DA uses the training observations to determine the location of a boundary between the response classes. The location of the boundary is determined by treating the observations of each class as samples from a multi-dimensional normal distribution.
+
+![](https://latex.codecogs.com/svg.latex?%5Clarge%20p%28x%29%20%3D%20%5Cfrac%7B%5Cexp%7B%5Cleft%28-%5Cfrac%7B1%7D%7B2%7D%28x-%5Cmu%29%5E%5Ctop%20%5CSigma%5E%7B-1%7D%20%28x-%5Cmu%29%5Cright%29%7D%7D%7B%5Csqrt%7B%282%5Cpi%29%5En%20%5Cdet%7B%28%5CSigma%29%7D%7D%7D)
+
+In theory, we could fit an *n* dimensional normal distribution to the observations in each class - which involves calculating the <b>mean vector</b> (<i>&mu;</i>) and <b>covariance matrix</b> (&Sigma;) for each class. These determine the centre and the shape of the distribution respectively.
+
+Having fitted the distribution, a boundary between the classes can be drawn by determining the set of points where the probabilities are equal (e.g. *p*( :pear: | :seedling: ) = *p*( :lemon: | :seedling: )). Observations on :pear: of the boundary would be classified as :pear" and observations found on :lemon: as :lemon:. All of this can be done theoretically that yields an equation for the boundary that relies on the parameters of the fitted distributions, such as:
+ 
+![](https://latex.codecogs.com/svg.latex?%5Clarge%20f_%7B%5Cmu_%7B%5Ctextrm%7Bpear%7D%7D%2C%20%5Cmu_%7B%5Ctextrm%7Blemon%7D%7D%2C%20%5CSigma_%7B%5Ctextrm%7Bpear%7D%7D%2C%20%5CSigma_%7B%5Ctextrm%7Blemon%7D%7D%7D%28x%29%20%3D%200)
+
+Subsequently, the entire process of having to perform DA is not necessarily needed. All we only need to do is to
+
+  1. Calculate the <i>&mu;</i> and the &Sigma; and;
+  2. Apply the formula for the boundary.
+
+If we assume that the distributions have the same shape (as in &Sigma;<sub>i</sub> = &Sigma;<sub>j</sub> = &Sigma;<sub>k</sub>) then the formula can be simplified greatly - the boundaries become linear. The coefficients of these linear boundaries can also be easily calculated from the individual class means and shared coviarance matrix of the observations. This makes linear discriminate analysis (LDA) quick and easy to perform. LDA works when the measurements made on independent variables for each observation are continuous quantities (As in, another technique called *discriminant correspondence analysis* must be used for categorical independent variables).
+
+That being said, linear boundaries are not appropriate for all problems. If we assume that the covariance matrices are not the same for all classes (i.e. &Sigma;<sub>i</sub> &ne; &Sigma;<sub>j</sub> &ne; &Sigma;<sub>k</sub>), then the boundaries become quadratic and the coefficients are, again, determined by the mean vectors and covariance matrices of the observed classes. Quadratic discriminate analysis (QDA) is, therefore, still relatively quick but it requires more runtime and memory to calculate, store and invert the multiple covariance matrices, particularly when there are a lot of predictors and classes. 
+
+Much like NB, the boundaries are based on the statistical distribution of all the observations cf. individual observations. That is, the boundaries are somewhat robust to noise in the training data. 
+
+**Function**
+
+[`fitscdiscr`](https://au.mathworks.com/help/stats/fitcdiscr.html)
+
+<u>Common Options</u>
+
+- `Delta`: coefficient threshold for including predictors in a linear boundary (default: 0)
+
+- `DiscrimType`: type of boundary used (default: `linear`)
+
+| Value | Description | Predictor &Sigma; Treatment |
+| :--- | :--- | :--- |
+`linear` | LDA | Same
+`diaglinear` | LDA | Same, diagonal
+`pseudolinear` | LDA | Same, inverted using pseudo inverse
+`quadratic` | QDA | Different
+`diagquadratic` | QDA | Different & diagonal
+`pseudoquadratic` | QDA | Different & inverted using the pseudo inverse
+
+- `Gamma`: regularisation to use when estimating the covariance matrix for linear DA. (range:`[0, 1]`)
+
+    If `0` is specified, then no regularisation is applied to adjust the &Sigma; i.e. MATLAB will use the unrestricted, empirical covariance matrix. 
+
+    If a value in the interval (0, 1) is specified, then LDA must be implemented. 
+
+    If `1` is specified, then MATLAB will use maximum regularisation for &Sigma; estimation.
+
+
+**Performance**
+
+| Fit Time | Prediction Time | Memory Consumption |
+| :---: | :---: | :---: |
+| Fast, &propto; dataSize | Fast, &propto; dataSize | LDA: Small, QDA: Large-ish |
+
+**Note**
+
+LDA works well for "wide" data where there are more predictors than observations.
+
+### i. Example 1
+
+```matlab
+%% Load and partition data
+load groups
+rng(0)
+cvpt = cvpartition(groupData.group,"Holdout",0.35);
+dataTrain = groupData(training(cvpt),:);
+dataTest = groupData(test(cvpt),:);
+plotGroup(groupData,groupData.group,"x")
+
+%% Calculate loss and plot predictions
+errDA = loss(mdlDA,dataTest);
+disp("Discriminant Analysis Loss: " + errDA)
+hold on
+spit(dataTest,predGroups,"o")
+hold off
+
+%% Create model and predict
+mdlDA = fitcdiscr(dataTrain,"group","DiscrimType","diaglinear","Gamma",0);
+predGroups = predict(mdlDA,dataTest);
+
+%% Function to create a plot of grouped data using gscatter
+function spit(data,grp,mkr)
+    validateattributes(data,"table",{'nonempty','ncols',3})
+    
+    % Plot data by group
+    colors = colororder;
+    p = gscatter(data.x,data.y,grp,colors([1 2 4],:),mkr,9);
+    
+    % Format plot
+    [p.LineWidth] = deal(1.5);
+    legend("Location","eastoutside")
+    xlim([-0.5 10.5])
+    ylim([-0.5 10.5])
+end
+
+```
+
+### ii. Example 2 - COPD Data (Numerical only)
+
+```matlab
+data = readtable("COPDPredictions.txt");
+data.COPD = categorical(data.COPD);
+
+%% Partition data into training and test set
+P = cvpartition(data.COPD, "HoldOut", 0.3);
+train = data(training(P), :);
+test = data(test(P), :);
+
+%% Create model 
+model_LDA = fitcdiscr(train, "COPD");
+displayloss(model_LDA, test)
+
+model_LDA_diag = fitcdiscr(train, "COPD", "DiscrimType", "diaglinear");
+displayloss(model_LDA_diag, test)
+
+model_LDA_diag_gamma0 = fitcdiscr(train, "COPD", "DiscrimType", "diaglinear", "Gamma", 0);
+displayloss(model_LDA_diag_gamma0, test)
+
+model_QDA = fitcdiscr(train, "COPD", "DiscrimType", "quadratic");
+displayloss(model_QDA, test)
+
+model_QDA_diag = fitcdiscr(train, "COPD", "DiscrimType", "diagquadratic");
+displayloss(model_QDA_diag, test)
+
+model_QDA_diag_gamma1 = fitcdiscr(train, "COPD", "DiscrimType", "diagquadratic", "Gamma", 1);
+displayloss(model_QDA_diag_gamma1, test)
+
+%% Calculate loss for training and test sets
+function [] = displayloss(model, testset)
+  train_E = resubLoss(model);
+  test_E = loss(model, testset);
+  disp("Training error: " + train_E)
+  disp("Test error: " + test_E)
+```
