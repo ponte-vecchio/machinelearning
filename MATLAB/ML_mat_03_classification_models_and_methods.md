@@ -10,6 +10,8 @@ Table of Contents
   - [4. Discriminant Analysis](#4-discriminant-analysis)
     - [i. Example 1](#i-example-1-1)
     - [ii. Example 2 - COPD Data (Numerical only)](#ii-example-2---copd-data-numerical-only)
+  - [Support Vector Machines](#support-vector-machines)
+    - [i. Example 1 - Concentric Data](#i-example-1---concentric-data)
 
 # Classification Methods
 
@@ -445,3 +447,127 @@ function [] = displayloss(model, testset)
   disp("Training error: " + train_E)
   disp("Test error: " + test_E)
 ```
+
+## Support Vector Machines
+
+Classifying data correctly is important in ML. In support vector machines (SVMs), a data point is viewed as a *p*-dimensional vector where ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Cmathbf%7Bp%7D%3D%5Clbrace1%2C2%2C...%2Cp%5Crbrace) and we want to know whether we can separate such points with a (*p* - 1)-dimensional hyperplane. This is known as the <b>linear classifier</b>. Suppose we wanted to classify the given data below. There are many hyperplanes (&Eta;) that might classify the data, but the best hyperplane is the one that represents the largest separation (or margin) between two classes, i.e. &Eta;<sub>3</sub>. This can be thought of as the hyperplane whose distance from the nearest data point on each side is maximised - known as the <b>maximum-margin hyperplane</b> and the resulting linear classifier it defines is known as the <b>perceptron of optimal stability</b>.
+
+<center>
+
+<a href="https://commons.wikimedia.org/wiki/File:Svm_separating_hyperplanes_(SVG).svg#/media/File:Svm_separating_hyperplanes_(SVG).svg"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Svm_separating_hyperplanes_%28SVG%29.svg" alt="Svm separating hyperplanes (SVG).svg" width="512" height="443"></a>
+
+</center>
+
+If the data is actually linearly separable, then it results in a simple task of optimisation - choose the coefficients of the linear boundary to maximise the margin assuming that all observations are on the correct side of the boundary. Keep in mind that the optimal solution is determined only by the observations nearest to the boundary. These observations are referred to as the <b>support vectors</b>. 
+
+Real data may not be linearly separable due to noise. That is, there may be no linear boundary that can correctly classify every observation. If such is the case, then we can modify the optimisation problem to maximise the margin but with a penalty term for misclassified observations. N.B. observations are correctly classified only if they lie on the correct side of the margin so the penalty term prevents a solution that cheats by having a huge margin. The SVM solution is the one that gives the best possible separation between the classes i.e. the widest margin without unnecessary misclassifications.
+
+<b>Non-linear classification</b>
+
+What if linear classification is appropriate for your classes/observations? SVMs can still be used for non-linear classification problems by performing a transformation of variables into a space where the classes are linearly separable. Such transformation in ML is called the <b>kernel machine</b>. The resulting algorithm is similar, except that every dot product is replaced by a non-linear kernel function. This allows the algorithm to fit the maximum-margin hyperplane in a transformed <b>feature space</b>. The linear classifier in the feature space can be converted back to original input space, yielding a non-linear classifier. It is noteworthy that working in a higher-dimensional feature space increases the generalisation error of SVMs. Some sommon kernels include:
+
+| Kernel | Expression |
+| :--- | :--- |
+| Homogenous Polynomial | ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Clarge%20k%28%5Cvec%7Bx_i%7D%2C%5Cvec%7Bx_j%7D%29%3D%28%5Cvec%7Bx_i%7D%20%5Ccdot%20%5Cvec%7Bx_j%7D%29%5Ed) |
+| Heterogenous Polynomial | ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Clarge%20k%28%5Cvec%7Bx_i%7D%2C%5Cvec%7Bx_j%7D%29%3D%28%5Cvec%7Bx_i%7D%20%5Ccdot%20%5Cvec%7Bx_j%7D%20&plus;%201%29%5Ed) |
+| Gaussian radial basis function | ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Clarge%20k%28%5Cvec%7Bx_i%7D%2C%5Cvec%7Bx_j%7D%29%3D%5Cexp%7B%28-%5Cgamma%20%5Cleft%7C%20%5Cleft%7C%20%5Cvec%7Bx_i%7D%20-%20%5Cvec%7Bx_j%7D%20%5Cright%7C%20%5Cright%7C%5E2%29%7D%20%5Ctext%7B%20for%20%7D%20%5Cgamma%20%3E0)
+| Hyperbolic tangent | ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Clarge%20k%28%5Cvec%7Bx_i%7D%2C%5Cvec%7Bx_j%7D%29%3D%20%5Ctanh%20%28%5Ckappa%20%5Cvec%7Bx_i%7D%20%5Ccdot%20%5Cvec%7Bx_j%7D&plus;c%29%20%5Ctextrm%7B%20for%20some%20%7D%20%5Ckappa%3E0%2C%20c%3C0)
+
+<br>
+<br>
+
+**Function**
+
+[`fitcsvm`](www.mathworks.com/help/stats/fitcsvm.html)
+
+<u>Common Options</u>
+
+- `KernelFunction`: types of kernel functions to apply
+
+| Kernel Function Name | Description |
+| :--- | :--- |
+| `gaussian` or `rbf` | Gaussian/Radial Basis Function kernel, default for one-class learning
+| `linear` | Linear kernel, default for two class learning |
+| `polynomial` | Polynomial kernel. `PolynomialOrder` name-value needs to be used to specify a kernel of order *q*.
+
+- `KernelScale`: scalling applied before the kernel transformaion (default: `1`)
+
+    If `auto` is specified, then MATLAB selects an appropriate scale factor using a heuristic procedure. This procedure uses subsampling, resulting in varying estimate from one call to another. For reproducibility, set a random number seed using `rng` before training.
+
+- `BoxConstraint`: Regularisation parameter controlling the misclassification penalty. (default: `1`)
+
+**Performance**
+
+<center>
+
+| Fit Time | Prediction Time | Memory Consumption |
+| :---: | :---: | :---: |
+| Fast, &propto; dataSize<super>2</super> | Very Fast, &propto; dataSize<super>2</super> | Moderate |
+
+</center>
+
+**Note**
+
+- SVMs use a distance based algorithm. For data that is not normalised, use the `Standardize` option. 
+
+- Linear SVMs work well for "wide" data (more predictors than observations). 
+
+- Gaussian SVMs often work better on "tall" data (more observations than predictors).
+
+### i. Example 1 - Concentric Data
+
+```matlab
+%% Load, partition and plot the data
+load data
+rng(123)
+cvpt = cvpartition(data.group,"Holdout",0.38);
+trainPoints = data(training(cvpt),:);
+testPoints = data(test(cvpt),:);
+plotGroup(data,data.group,".")
+```
+
+<center>
+
+![](svm_concentric_1.png)
+
+</center>
+
+```matlab
+%% Devise a model and calculate loss
+% since the data is concentric, polynomial kernel function would be wise
+mdl = fitcsvm(trainPoints, "group", "KernelFunction","polynomial")
+mdl_loss = loss(mdl, testPoints)
+
+%% Plot predicted groups
+predGroups = predict(mdl,testPoints);
+plotGroup(points,points.group,".")
+hold on
+plotGroup(testPoints,predGroups,"o")
+hold off
+
+%% function
+function plotGroup(data,grp,mkr)
+    validateattributes(data,"table",{'nonempty','ncols',3})
+    
+    % Plot data by group
+    colors = colororder;
+    p = gscatter(data.x,data.y,grp,colors([1 2 4],:),mkr,9);
+    
+    % Format plot
+    [p.LineWidth] = deal(1.25);
+    legend("Location","eastoutside")
+    xlim([-11 11])
+    ylim([-11.5 11])
+end
+```
+
+```matlab
+mdl_loss =
+    0
+```
+
+<center>
+
+![](svm_concentric_2.png)
+
+</center>
