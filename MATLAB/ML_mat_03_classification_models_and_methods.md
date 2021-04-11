@@ -157,7 +157,7 @@ Consider three clusters, which are :apple:, :lemon: and :pear: scattered across 
 
 Bayes' theorem of conditional probabilities can reverse this and calculate the probability that the observation at :seedling: comes from the class :apple:. That is to say - given an observation :seedling: at a certain location, what is the probability that it is an :apple:? This can be represented as
 
-  <i>p</i>( :apple: | :seedling) = <i>p</i>( :seedling: | :apple: ) * <i>p</i>( :apple: ) / <i>p</i>( :seedling: )
+  <i>p</i>( :apple: | :seedling: ) = <i>p</i>( :seedling: | :apple: ) * <i>p</i>( :apple: ) / <i>p</i>( :seedling: )
 
 We can calculate this probability for each class - :apple:, :lemon: and :pear: - then clasify observation according to which class was the most likely. If, for example, we had these three probabilities:
 
