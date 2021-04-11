@@ -16,4 +16,4 @@ Table of contents
 
 ### [Finding Patterns in Data](https://github.com/ponte-vecchio/machinelearning/blob/main/MATLAB/ML_mat_02_finding_patterns_in_data.md)
 
-### [Classification Models & Methods](https://github.com/ponte-vecchio/machinelearning/blob/main/MATLAB/ML_mat_03_classification_models_and_methods.md#3-na%C3%AFve-bayes)
+### [Classification Models & Methods](https://github.com/ponte-vecchio/machinelearning/blob/main/MATLAB/ML_mat_03_classification_models_and_methods.md)
