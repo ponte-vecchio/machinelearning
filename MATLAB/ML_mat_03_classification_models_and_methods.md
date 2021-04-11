@@ -10,7 +10,7 @@ Table of Contents
   - [4. Discriminant Analysis](#4-discriminant-analysis)
     - [i. Example 1](#i-example-1-1)
     - [ii. Example 2 - COPD Data (Numerical only)](#ii-example-2---copd-data-numerical-only)
-  - [Support Vector Machines](#support-vector-machines)
+  - [5. Support Vector Machines](#5-support-vector-machines)
     - [i. Example 1 - Concentric Data](#i-example-1---concentric-data)
 
 # Classification Methods
@@ -60,7 +60,6 @@ A *k*-NN model requires that all predictors are numeric or all predictors are ca
 
 Binary decision trees classify observations by generating a sequence of Y/N questions - much like the [twenty questions game](https://en.wikipedia.org/wiki/Twenty_questions). For a given training data, the decision tree is built by considering all the possible splits in each variable. Using a given criterion for how good a potential split is, the best possible split is chosen. The process then repeats at the next level of the tree until all the branches eventually terminate which occurs when no further splits on that branch can improve the criterion value. This process is called [recursive partitioning](https://en.wikipedia.org/wiki/Recursive_partitioning). The end result divides up the predictor space into a collection of rectangular regions. Once the classifier is trained, making predictions becomes extremely quick because it requires nothing more than a couple binary decisions. In general, trees are a good choice when <b>there is a significant amount of missing data</b>.
 
-<center>
 
 | <b>Advantages</b>|
 | :--- |
@@ -81,7 +80,6 @@ Binary decision trees classify observations by generating a sequence of Y/N ques
 | Small changes in training data leads to a large change in tree
 | Over-complex trees leading to overfitting
 
-</center>
 
 Real data will always have some noise. In theory, a sufficiently complex tree could fit an arbitrarily complex boundary between points. However, this generally means that the model may overfit the data. That being said, pruning a tree is also possible. Tree pruning reduces the number of splits to create a simpler model that may have a higher re-substitution loss but superior generalisation to new data.
 
@@ -100,6 +98,8 @@ Commonly Used Args
 | Fit Time | Prediction Time | Memory Consumption |
 |:---: | :---: | :---: |
 | &propto; dataSize | Fast | Small |
+
+
 
 ### i. Example
 
@@ -448,7 +448,7 @@ function [] = displayloss(model, testset)
   disp("Test error: " + test_E)
 ```
 
-## Support Vector Machines
+## 5. Support Vector Machines
 
 Classifying data correctly is important in ML. In support vector machines (SVMs), a data point is viewed as a *p*-dimensional vector where ![](https://latex.codecogs.com/svg.latex?%5Cinline%20%5Cmathbf%7Bp%7D%3D%5Clbrace1%2C2%2C...%2Cp%5Crbrace) and we want to know whether we can separate such points with a (*p* - 1)-dimensional hyperplane. This is known as the <b>linear classifier</b>. Suppose we wanted to classify the given data below. There are many hyperplanes (&Eta;) that might classify the data, but the best hyperplane is the one that represents the largest separation (or margin) between two classes, i.e. &Eta;<sub>3</sub>. This can be thought of as the hyperplane whose distance from the nearest data point on each side is maximised - known as the <b>maximum-margin hyperplane</b> and the resulting linear classifier it defines is known as the <b>perceptron of optimal stability</b>.
 
@@ -490,7 +490,7 @@ What if linear classification is appropriate for your classes/observations? SVMs
 | `linear` | Linear kernel, default for two class learning |
 | `polynomial` | Polynomial kernel. `PolynomialOrder` name-value needs to be used to specify a kernel of order *q*.
 
-- `KernelScale`: scalling applied before the kernel transformaion (default: `1`)
+- `KernelScale`: scaling applied before the kernel transformaion (default: `1`)
 
     If `auto` is specified, then MATLAB selects an appropriate scale factor using a heuristic procedure. This procedure uses subsampling, resulting in varying estimate from one call to another. For reproducibility, set a random number seed using `rng` before training.
 
