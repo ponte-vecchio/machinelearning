@@ -1,5 +1,4 @@
 # Dependencies
-markdown:         kramdown
 theme:            jekyll-theme-modernist
 
 # Permalinks
