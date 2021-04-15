@@ -225,7 +225,7 @@ Accuract and misclassification rate give a single value for the overall performa
 
 A *confusion matrix* shows the number of observations for each combination of true and predicted class.
 
-![image](confusionmatrix.png)
+![image](/MATLAB/images/confusionmatrix.png)
 
 A confusion matrix is commonly visualised by shading the elements according to their value. Often othe diagonal elements (the correct classifications) are shaded in one colour and the other elements (the incorrect classifications) in another colour. Confusion matrix can be visualised via the `confusionchart` function.
 
@@ -413,7 +413,7 @@ xstan = standardizeMissing(x,[-Inf, 0, Inf])
 ## 4. Calculating Correlations
 Examine the image provided below, which analyses handwritten 'V'. For the first half of the letter V, the horizontal and vertical positions have a strong negative linear correlation: when the horizontal position increases, the vertical position decreases proportionally. Similarly, for the second half, the positions have a strong positive correlation: when the horizontal position increases, the vertical position also increases proportionally.
 
-![V](Vcorrelation.png)
+![V](/MATLAB/images/Vcorrelation.png)
 
 ### a. `corr`
 The `corr` function calculates the linear correlation between variables. Because some variables may contain missing data, the output may equal `NaN`. In this case, `"Rows"` option can be used to specify how to avoid missing values.
@@ -477,7 +477,7 @@ feat = table(aratio,numXmin,numYmax,avgdX,avgdY, corrXY, 'VariableNames', label)
 ```
 ## 6. Extracting Features from Multiple Data Files
 
-![Multiple Transforms](multipletransforms.png)
+![Multiple Transforms](/MATLAB/images/multipletransforms.png)
 From the raw data, we will typically need to apply both [preprocessing](#importing-and-preprocessing-data) and [feature extraction](#3-extract-features-1-calculating-features) functions.
 
 ```matlab
@@ -547,8 +547,8 @@ We can calculate the loss on any dataset where the correct class is known. The l
 
 ## 4. Investigating Misclassifications
 
-![text](truefalseposneg.png)
-![text](truefalseposneg_multi.png)
+![text](/MATLAB/images/truefalseposneg.png)
+![text](/MATLAB/images/truefalseposneg_multi.png)
 
 For any response class $X$, we can divide a machine learning model's predictions into four groups:
 
@@ -570,7 +570,7 @@ confusionchart(...,"RowSummary","row-normalized")
 #### False Negatives
 Typically the values in confusion charts are made visible. Howeverm, in the example of predicting alphabets from handwriting there are 26 Classes to consider, making it a 26x26 table. Upon resizing, the row summary will show the false negative rates for each Class. This shows which Classes the kNN model has the most difficulty identifying.  
 
-![](falsenegU.png)
+![](/MATLAB/images/falsenegU.png)
 
 In the example given above, the model has particular difficulty with the letter U, most often mistaking it for M, N or V. Some confusions seem reasonable, such as U/V or H/N. Others are more surprising, such as U/K. Having idenfitied misclassifications of interest, we will want to look at some of the specific data samples to understand what is causing the misclassification. We can use relational & logical operators (e.g. `==`, `~=`, `&` and `|`) to identify observations to study this further. For example,
 

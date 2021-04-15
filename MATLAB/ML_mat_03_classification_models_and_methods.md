@@ -263,7 +263,7 @@ end
 ```matlab
 Naive Bayes Loss: 0.11713
 ```
-| ![](fitcnb_out.png)|
+| ![](/MATLAB/images/fitcnb_out.png)|
 | :---: |
 
 ### ii. Example 2 - Numerical & Categorical Data
@@ -528,7 +528,7 @@ plotGroup(data,data.group,".")
 
 <center>
 
-![](svm_concentric_1.png)
+![](/MATLAB/images/svm_concentric_1.png)
 
 </center>
 
@@ -568,6 +568,6 @@ mdl_loss =
 
 <center>
 
-![](svm_concentric_2.png)
+![](/MATLAB/images/svm_concentric_2.png)
 
 </center>

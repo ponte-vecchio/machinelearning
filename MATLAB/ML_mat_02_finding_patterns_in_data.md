@@ -105,9 +105,9 @@ scatter3(Y(:,1), Y(:,2), Y(:,3))
 to afford the following outputs:
 | Type | Output |
 |:--- |:---: |
-|`pareto`|![pareto](paretoe.png)|
-|`scatter`|![scatter2D](cmdsscatter.png)|
-|`scatter3`|![scatter3D](cmdsscatter3.png)|
+|`pareto`|![pareto](/MATLAB/images/paretoe.png)|
+|`scatter`|![scatter2D](/MATLAB/images/cmdsscatter.png)|
+|`scatter3`|![scatter3D](/MATLAB/images/cmdsscatter3.png)|
 
 #### ii. Non-classical MDS
 
@@ -141,7 +141,7 @@ As discussed earlier, another commonly used method for dimensionality reduction 
 
 | | |
 | :--- | :---:|
-| Suppose that the input matrix `data` has two columns which contain values of the observed variables `x1` and `x2`. | ![](pcaData.png)|
+| Suppose that the input matrix `data` has two columns which contain values of the observed variables `x1` and `x2`. | ![](/MATLAB/images/pcaData.png)|
 
 </center>
 
@@ -161,7 +161,7 @@ P =
 
 <center>
 
-| ![](pca1.png) | ![](pca2.png) |
+| ![](pca1.png) | ![](/MATLAB/images/pca2.png) |
 | :---: | :---:|
 
 
@@ -171,7 +171,7 @@ The second output `scrs` is a matrix containing the observations in `data `expre
 
 <center>
 
-| `scrs(42,:)` | ![](pca3.png) |
+| `scrs(42,:)` | ![](/MATLAB/images/pca3.png) |
 | :--- | :---: |
 
 
@@ -183,7 +183,7 @@ Finally, the final output `pxep` is a vector containing the percent variance exp
 
  | `pexp = 95.6706  4.3294` | `scrs(:,1)` |
  | :--- | :--- |
- | ![](xformd1.png) | ![](xformd2.png) |
+ | ![](xformd1.png) | ![](/MATLAB/images/xformd2.png) |
 
 </center>
 
@@ -219,18 +219,18 @@ idx = kmeans(X, k)
 | :---: | :--- |
 | `"Distance"` | Distance metric used to access the similarity between two observations. (default = `"euclidean"`) |
 | `"Start"` | Location of the starting centoids of the two clusters.  |
-| `g  = kmeans(x,2)`|  ![](cluster1.png) |
-| `g  = kmeans(x,2,"Start",[0 -1; 6 5])` | ![](cluster2.png)|
+| `g  = kmeans(x,2)`|  ![](/MATLAB/images/cluster1.png) |
+| `g  = kmeans(x,2,"Start",[0 -1; 6 5])` | ![](/MATLAB/images/cluster2.png)|
 | `"Replicates"` | Number of clustering repeats. Returns the lowest sum of distances between the centroids and the observations `sumd`  |
 
 Note that with varying options, clusters will also look very different.
 
 | Options | Output |
 | :--- | :---: |
-| `Distance`:`"default"`  | ![](cluster_default_gscatter.png) |
-| `Distance`:`"cityblock"` | ![](cluster_cityblock_gscatter.png) |
-| `Distance`:`"cosine"`| ![](cluster_cosine_gscatter.png) |
-| `Distance`:`"correlation"`| ![](cluster_correlation_gscatter.png) |
+| `Distance`:`"default"`  | ![](/MATLAB/images/cluster_default_gscatter.png) |
+| `Distance`:`"cityblock"` | ![](/MATLAB/images/cluster_cityblock_gscatter.png) |
+| `Distance`:`"cosine"`| ![](/MATLAB/images/cluster_cosine_gscatter.png) |
+| `Distance`:`"correlation"`| ![](/MATLAB/images/cluster_correlation_gscatter.png) |
 
 A typical workflow using *k*-means clustering will resemble the following:
 
@@ -363,7 +363,7 @@ We can visualise the first observation by plotting its variable on the y-axis an
 parallelcoords(measurement(1,:), group=group(1,:), linewidth=1)
 ```
 
-| ![](pcoords_cluster1.png)|
+| ![](/MATLAB/images/pcoords_cluster1.png)|
 | :---: |
 
 ```matlab
@@ -371,7 +371,7 @@ parallelcoords(measurement(1,:), group=group(1,:), linewidth=1)
 parallelcoords(measurement(1:2,:), group=group(1:2,:), linewidth=1)
 ```
 
-| ![](pcoords_cluster1_2.png)|
+| ![](/MATLAB/images/pcoords_cluster1_2.png)|
 | :---: |
 
 
@@ -380,7 +380,7 @@ parallelcoords(measurement(1:2,:), group=group(1:2,:), linewidth=1)
 parallelcoords(measurement, group=group, linewidth=1)
 ```
 
-| ![](pcoords_cluster12.png)|
+| ![](/MATLAB/images/pcoords_cluster12.png)|
 | :---: |
 
 In addition to `Group` property, `Quantile` property with a value between 0 and 1 can be used. If the value <i>α</i> is specified, then only the media, <i>α</i> and 1-<i>α</i> quantile values are plotted for each group.
@@ -390,7 +390,7 @@ In addition to `Group` property, `Quantile` property with a value between 0 and 
 parallelcoords(measurement(1:2,:), group=group(1:2,:), linewidth=1, quantile=0.25))
 ```
 
-| ![](pcoords_cluster_quantile.png) |
+| ![](/MATLAB/images/pcoords_cluster_quantile.png) |
 | :---: |
 
 We can also visualise the centroids from each group which are evaluated from `kmeans` function:
@@ -400,7 +400,7 @@ We can also visualise the centroids from each group which are evaluated from `km
 parallelcoords(centroid, group = ["cluster 1", "cluster 2"], lindwidth=1)
 ```
 
-| ![](pcoords_centroid.png) |
+| ![](/MATLAB/images/pcoords_centroid.png) |
 | :---: |
 
 ### b. Cross-tabulation
@@ -449,7 +449,7 @@ silhouette(X, group)
 
 | *k* = 2 | *k* = 3 |
 | :---: | :---: |
-| ![](silhouette2.png) | ![](silhouette3.png) |
+| ![](silhouette2.png) | ![](/MATLAB/images/silhouette3.png) |
 
 In this case, having two clusters affords better quality clusters than dividing the data into three clusters. The silhouette plot where *k*=2 shows fewer negative silhouette values and the negative values themselves are of smaller in magnitue that that of the silhouette values where *k*=3. 
 
@@ -490,7 +490,7 @@ legend("1", "2")
 xticklabels(categories(data.pos))
 ```
 
-![bar(ct,"stacked")](barstack_basketball.png)
+![bar(ct,"stacked")](/MATLAB/images/barstack_basketball.png)
 
 ```matlab
 % compare meanss of distributions
@@ -500,7 +500,7 @@ xticklabels(labels)
 xtickangle(60)
 ```
 
-![parallelcoords(centroids, group=1:2)](pcoords_basketball.png)
+![parallelcoords(centroids, group=1:2)](/MATLAB/images/pcoords_basketball.png)
 
 ```matlab
 % evaluate GMM clustering of var statsNorm for 2:4
