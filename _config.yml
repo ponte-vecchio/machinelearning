@@ -1,5 +1,5 @@
 # Dependencies
-theme:            jekyll-theme-modernist
+theme:            jekyll-theme-minimal
 
 # Permalinks
 permalink:        pretty
