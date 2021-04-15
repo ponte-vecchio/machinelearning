@@ -1,18 +1,10 @@
 # Dependencies
 theme:            jekyll-theme-minimal
 
-# Permalinks
-permalink:        pretty
-
 # Setup
-title:            'Machine Learning'
-tagline:          'Documentation on me learning ML'
-description:      ''
 url:              http://ponte-vecchio.github.io/machinelearning/
 baseurl:          http://ponte-vecchio.github.io/machinelearning/
 
 author:
   name:           'Jevgeni Khaganov'
   url:            https://gitlab.paradoxical.pw/ponte-vecchio
-
-paginate:         1
